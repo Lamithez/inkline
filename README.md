@@ -33,6 +33,7 @@ tectonic main.tex
 | `references/references.bib` | 文献库 |
 | `figures/` | 图片资源（含占位图与说明） |
 | `fonts/` | 随附思源宋体、思源黑体及许可证，无需安装到系统 |
+| `引用与引文语法.md` | 引文、引用文献、脚注的语法速查 |
 
 ## 切换版式
 
@@ -56,8 +57,20 @@ tectonic main.tex
 | 突出重点 | `\keypoint{重点}` 或 `\alert{强调}` |
 | 插入图片 | `\slideimage{result.png}`，限高用 `\slideimage[0.45\textheight]{result.png}` |
 | 来源说明 | `\sourceNote{来源：……}` |
-| 文献引用 | `\textcite{键}` / `\parencite{键}` |
+| 行内引文 | `\enquote{引文}` |
+| 整段引文 | `\begin{quote}...\end{quote}` 或 `\blockquote{...}` |
+| 文献引用 | `\textcite{键}` / `\parencite{键}` / `\footcite{键}` |
 | 网址与路径 | `\url{网址}`、`\path{路径}` |
+
+## 引用类文字的字体
+
+参考文献、正文引用、引文块（`quote` / `quotation` / `\blockquote`）与脚注统一使用
+**Times 风格衬线体**，由 `config/base.tex` 的 `\TimesCite` 提供；正文西文仍是 Latin Modern，
+中文仍是思源宋体/黑体。字体族使用 TeX Gyre Termes（Times New Roman 的度量兼容替代品，
+随 Tectonic / TeX Live 分发）。要整体更换，只改 `\TimesCite` 一处即可。
+
+`config/base.tex` 中另有 `\renewcommand{\bibfont}{\TimesCite}` —— 文献表字体必须通过
+biblatex 的 `\bibfont` 钩子设置，在 frame 里写 `\TimesCite` 会被 biblatex 重置。
 
 ## 附录与页码
 
@@ -70,6 +83,8 @@ tectonic main.tex
 使用 `biblatex + BibTeX`（作者年份制），文献表自动列出已引用条目并支持分页。`references.bib` 中的 `example2026` 是虚构示例，正式使用前请替换。
 
 **Tectonic 不带 biber**：把 `config/base.tex` 的后端改成 `biber` 会以 `error: program not found` 失败。若需要 biber 的完整多语种（中文作者名、排序）支持，请改用带 biber 的 XeLaTeX 工具链编译，或在 Overleaf 上选择 XeLaTeX + Biber。
+
+引文、引用与脚注的完整语法对照见 [引用与引文语法.md](引用与引文语法.md)。
 
 ## 编译排查
 

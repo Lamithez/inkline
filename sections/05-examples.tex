@@ -200,3 +200,46 @@
     \texttt{\textbackslash begin\{frame\}[fragile]} 后使用 verbatim 环境。
   \end{block}
 \end{frame}
+
+% -----------------------------------------------------------------------------
+% 8. 引文与引用
+% -----------------------------------------------------------------------------
+% 引用类文字（参考文献、正文引用、引文块、脚注）统一使用 Times 风格衬线体，
+% 由 config/base.tex 的 \TimesCite 提供；正文西文仍是 Latin Modern。
+% 更完整的语法对照见项目根目录的「引用与引文语法.md」。
+\begin{frame}{引文与引用}
+  \begin{quote}
+    \enquote{引文内容写在这里，通常是一句原文；\texttt{quote} 环境整段缩进，
+    适合较短的引文。}
+  \end{quote}
+
+  \vspace{0.3em}
+  \begin{itemize}
+    \item 叙述式引用：\textcite{example2026} 提出了该问题的基本框架。
+    \item 括号式引用：已有工作给出了类似结论\parencite{example2026}。
+    \item 只取作者与年份：\citeauthor{example2026}（\citeyear{example2026}）。
+    \item 长引文用 \texttt{\textbackslash blockquote}：\blockquote{这是一段
+      较长的引文，超过一定行数后会自动转为整段缩进，并在末尾给出出处。}
+  \end{itemize}
+  \sourceNote{来源：\parencite{example2026}（示例条目，请替换为真实文献）。}
+\end{frame}
+
+% 脚注式引用（三种写法对照）
+\begin{frame}{脚注式引用}
+  \begin{itemize}
+    \item 作者 + 年份：此处引用一条工作\footnote{\citeauthor{example2026},
+      \citeyear{example2026}.}。
+    \item 作者 + 标题 + 年份：此处引用另一条工作\footnote{\citeauthor{example2026},
+      \citetitle{example2026}, \citeyear{example2026}.}。
+    \item 完整文献条目：用 \texttt{\textbackslash footcite} 直接把文献表内容
+      放进脚注\footcite{example2026}。
+  \end{itemize}
+
+  \begin{alertblock}{使用建议}
+    \begin{itemize}
+      \item 图表与数据来源用 \texttt{\textbackslash sourceNote}；
+      \item 观点出处用 \texttt{\textbackslash parencite} / \texttt{\textbackslash textcite}；
+      \item 只在需要展开出处细节（如封面引文）时使用 \texttt{\textbackslash footnote}。
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

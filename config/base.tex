@@ -68,7 +68,47 @@
 \urlstyle{same}
 
 % -----------------------------------------------------------------------------
-% 4. 参考文献
+% 4. 引用类文字的专用字体（Times 风格）
+% -----------------------------------------------------------------------------
+% 需求：参考文献、正文引用、引文块与脚注统一使用 Times 一类的衬线体，
+%       而正文西文仍保留 Latin Modern。
+% 说明：TeX 发行版不自带 Times New Roman（商业字体），这里使用其度量兼容的
+%       TeX Gyre Termes（Nimbus Roman No9 的再发布版），字形与 Times New Roman
+%       基本一致，且随 Tectonic / TeX Live 一起分发，无需额外安装。
+% 加载方式用**文件名**而不是字体名：实测 Tectonic 下 fontspec 找不到
+%       "TeX Gyre Termes" 这个 family 名，直接给文件名才能解析。
+% 若某套发行版只提供 X 变体，则回退到 TeXGyreTermesX-*.otf，保证仍可编译。
+\IfFileExists{texgyretermes-regular.otf}{%
+  \newfontfamily\TimesCite{texgyretermes-regular.otf}[%
+    BoldFont=texgyretermes-bold.otf,
+    ItalicFont=texgyretermes-italic.otf,
+    BoldItalicFont=texgyretermes-bolditalic.otf]%
+}{%
+  \newfontfamily\TimesCite{TeXGyreTermesX-Regular.otf}[%
+    BoldFont=TeXGyreTermesX-Bold.otf,
+    ItalicFont=TeXGyreTermesX-Italic.otf,
+    BoldItalicFont=TeXGyreTermesX-BoldItalic.otf]%
+}
+
+% 引用块环境：沿用 LaTeX 标准名 quote / quotation，但换成 Times 风格字体。
+% quote 适合较短引文（整段缩进、无首行缩进）；
+% quotation 适合多段落长引文（整段缩进且首行再缩进）。
+% quote / quotation 在 LaTeX 内核里是「命令式环境」（只有 \quote/\endquote，
+% 没有对应的 \quote...\endquote 环境名），所以先用 \let 备份原命令，
+% 再在原命令外层包一层字体切换，避免 \renewenvironment 找不到原定义。
+\let\origquote\quote
+\let\endorigquote\endquote
+\let\origquotation\quotation
+\let\endorigquotation\endquotation
+\renewenvironment{quote}
+  {\origquote\TimesCite\small}
+  {\endorigquote}
+\renewenvironment{quotation}
+  {\origquotation\TimesCite\small}
+  {\endorigquotation}
+
+% -----------------------------------------------------------------------------
+% 5. 参考文献
 % -----------------------------------------------------------------------------
 % 后端固定为 BibTeX：Tectonic 内置 BibTeX，但**不提供 biber**，
 % 所以这里不能改成 backend=biber（会以 "program not found" 失败）。
@@ -80,18 +120,27 @@
   doi=true,url=true,isbn=false]{biblatex}
 \addbibresource{references/references.bib}
 
+% 参考文献表字体：必须通过 biblatex 的 \bibfont 钩子设置。
+% 实测在 frame 内写 \TimesCite 或不带参数的 \AtBeginBibliography{\TimesCite}
+% 都会被 biblatex 在排版条目时重置回正文字体，只有 \bibfont 能稳定生效。
+\renewcommand{\bibfont}{\TimesCite}
+
+% csquotes：提供语言自适应的引号命令 \enquote{...} 与长引文 \blockquote{...}，
+% 免去手工写 ``...'' 这类 TeX 引号；autostyle 让它跟随文档语言选择引号形式。
+\usepackage[autostyle]{csquotes}
+
 % -----------------------------------------------------------------------------
-% 5. 正文中使用的可复用命令
+% 6. 正文中使用的可复用命令
 % -----------------------------------------------------------------------------
 % 突出重点：使用主题结构色 + 粗体（\alert 也可，见 commands.tex 的说明）
 \newcommand{\keypoint}[1]{\structure{\textbf{#1}}}
 
 % 来源说明（图表出处、数据来源）：小字号、灰色、左对齐，无脚注编号。
-% 在调用处就地排版，建议写在 frame 末尾；可在分组内结束段落，
-% 以保证多行来源的行距与字号一致。
+% 内容通常是 \parencite 之类的引用，因此一并使用 Times 风格字体。
+% 在调用处就地排版，建议写在 frame 末尾。
 \newcommand{\sourceNote}[1]{%
   \par\smallskip
-  {\raggedright\SourceNoteSize\color{AcademicGray}#1\par}}
+  {\raggedright\SourceNoteSize\TimesCite\color{AcademicGray}#1\par}}
 
 % 插图：第一参数为高度上限（默认 0.58\textheight），宽度自动适应单栏或双栏，
 % 并保持原始比例。例：\slideimage[0.45\textheight]{result.png}

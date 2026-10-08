@@ -17,7 +17,9 @@
 % -----------------------------------------------------------------------------
 % 2. 脚注
 % -----------------------------------------------------------------------------
-% 脚注正文：小字号、衬线、Italic；脚注编号保持直立（斜体数字难辨认）。
+% 脚注在学术汇报里通常承载引文（作者、标题、会议、年份），因此正文与粗体
+% 都使用 Times 风格字体（\TimesCite，定义在 base.tex），字形保持 Italic；
+% 脚注编号保持直立（斜体数字难辨认）。
 % 字号由各 style-*.tex 设置（小版 \scriptsize，大版 \footnotesize）。
-\setbeamerfont{footnote}{family=\rmfamily,shape=\itshape}
+\setbeamerfont{footnote}{family=\TimesCite,shape=\itshape}
 \setbeamerfont{footnote mark}{shape=\upshape}
