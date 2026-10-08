@@ -1,0 +1,131 @@
+% =============================================================================
+% layout.tex —— 版式层：页标题、边距、页脚与页码、过渡页、目录与列表模板
+% -----------------------------------------------------------------------------
+% 依赖：colors.tex（字体颜色）、style-*.tex（\InkMargin、\InkTopRule 等）。
+% 本文件是「改版面观感」的主要入口。
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+% 1. 页标题与边距
+% -----------------------------------------------------------------------------
+% 标题、横线和正文共享同一组左右边距，只需在 style-*.tex 里改 \InkMargin。
+\setbeamersize{text margin left=\InkMargin,text margin right=\InkMargin}
+
+% 标题下方蓝色横线的粗细
+\newcommand{\InkTopRule}{0.7pt}
+
+% 自定义页标题模板：标题（+可选副标题）→ 蓝色细横线 → 下方留白。
+% 用 \hrule 而不是 \hline，避免额外的表格上下文；
+% 顶部 0.35cm 与底部 0.25cm 的留白决定正文起始位置。
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\textwidth,sep=0pt]{frametitle}
+    \vskip0.35cm
+    \usebeamerfont{frametitle}\strut\insertframetitle\strut\par
+    \ifx\insertframesubtitle\empty\else
+      {\usebeamerfont{framesubtitle}\insertframesubtitle\par}%
+    \fi
+    \vskip0.12cm
+    {\color{AcademicBlue}\hrule height\InkTopRule}
+    \vskip0.25cm
+  \end{beamercolorbox}}
+
+% 多页 frame 自动续页时，在标题后追加序号，例如「（2）」
+\setbeamertemplate{frametitle continuation}{%
+  \ifnum\insertcontinuationcount>1\relax\space(\insertcontinuationcount)\fi}
+
+% 标题、章节页用衬线粗体（中文即思源宋体 Bold）
+\setbeamerfont{title}{family=\rmfamily,series=\bfseries}
+\setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries}
+\setbeamerfont{section title}{family=\rmfamily,series=\bfseries}
+
+% 关闭右下角导航图标；文献表不显示条目图标
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}{}
+% 图表编号
+\setbeamertemplate{caption}[numbered]
+
+% -----------------------------------------------------------------------------
+% 2. 列表模板
+% -----------------------------------------------------------------------------
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel.}
+\setbeamertemplate{itemize item}{\small\textbullet}
+\setbeamertemplate{itemize subitem}{\textendash}
+
+% -----------------------------------------------------------------------------
+% 3. 页脚与页码（含附录独立编号）
+% -----------------------------------------------------------------------------
+% 正文页码：「当前 / 总」。沿用 Beamer 内置的 totalframenumber 模板，
+% 其内容等价于原来的 \insertframenumber\,/\,\inserttotalframenumber。
+%
+% 附录页码：独立编号「A-序号 / A-总数」。
+%   \insertframenumberinappendix   附录内第几页（从 1 开始）
+%   \insertappendixframenumber     附录总页数
+% 这两个计数器由 Beamer 在 \appendix 时维护，并借助 .nav 辅助文件跨轮传递，
+% 因此不需要手工硬编码任何数字，也不需要自己加计数器。
+% 注意：绝不能在页脚里判断 \ifbeamer@inappendix —— 该条件在导言区
+%       渲染页脚时还未就绪，会直接报 Undefined control sequence。
+%       正确做法是用下面的 \appendix 包装，在进入附录时切换模板。
+\defbeamertemplate*{page number in head/foot}{inkappendixframenumber}{%
+  A-\insertframenumberinappendix\,/\,A-\insertappendixframenumber}
+
+% 当前使用的页码模板名；\appendix 会把它切换成附录模板。
+% 使用 \gdef 是因为 \appendix 在正文中执行，需要全局生效。
+\def\InkPageNumberStyle{totalframenumber}
+
+% 统一的页码输出：右对齐 + 当前模板。字号/颜色由 \ApplySlideStyle 与 colors.tex 设定。
+% \setbeamertemplate 在这里位于每个页脚的分组内部，作用范围仅限本次排版；
+% 由于模板名是全局的，切换一次即对所有后续页面稳定生效。
+\newcommand{\InkPageNumber}{%
+  \setbeamertemplate{page number in head/foot}[\InkPageNumberStyle]%
+  \usebeamerfont{page number in head/foot}%
+  \usebeamercolor[fg]{page number in head/foot}\hfill
+  \usebeamertemplate***{page number in head/foot}\par}
+
+% 包装 \appendix：先执行 Beamer 原本的附录处理（进入附录模式、写入计数器），
+% 再把页码模板切换到附录版本。这样附录页脚显示 A-1 / A-3 式编号，
+% 而正文始终保持「当前 / 总」不变。
+\let\InkAppendixOriginal\appendix
+\renewcommand{\appendix}{%
+  \InkAppendixOriginal
+  \global\def\InkPageNumberStyle{inkappendixframenumber}}
+
+% -----------------------------------------------------------------------------
+% 4. 目录
+% -----------------------------------------------------------------------------
+% 一级目录带编号（1. 研究背景）；二级目录用紧凑自定义模板：左缩进 2em，
+% 形如「3.1 小节名」，避免默认模板占用的额外竖直空间。
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode\leftskip=2em\relax
+  \inserttocsectionnumber.\inserttocsubsectionnumber\enspace
+  \inserttocsubsection\par}
+
+% -----------------------------------------------------------------------------
+% 5. 章节与小节过渡页
+% -----------------------------------------------------------------------------
+% 写在 frame 之外的 \section / \subsection 会自动插入一张居中过渡页，
+% 无需手写额外 frame。两类过渡页都不显示页码（noframenumbering），
+% 因此不会占用正文页码，也不受附录编号影响。
+% 带星号的 \section* / \subsection* 不触发过渡页。
+
+% 章节页：水平垂直居中，显示「编号 + 标题」，例如「1. 研究背景」
+\AtBeginSection[]{%
+  \begin{frame}[plain,c,noframenumbering]
+    \centering
+    {\usebeamerfont{section title}\usebeamercolor[fg]{section title}%
+      \insertsectionnumber.\enspace\insertsection\par}
+  \end{frame}
+}
+
+% 小节页：上下结构。上方灰色「章节号 + 章节名」，下方较大的「章节号.小节号 + 小节名」
+\AtBeginSubsection[]{%
+  \begin{frame}[plain,c,noframenumbering]
+    \centering
+    {\normalsize\color{AcademicGray}%
+      \insertsectionnumber.\enspace\insertsection\par}
+    \vspace{0.8em}
+    {\usebeamerfont{section title}\usebeamercolor[fg]{section title}\insertsectionnumber.\insertsubsectionnumber\enspace\insertsubsection\par}
+  \end{frame}
+}

@@ -1,0 +1,38 @@
+% =============================================================================
+% style-large.tex —— 大版版式（把 main.tex 首行改成 style-large 即启用）
+% -----------------------------------------------------------------------------
+% 职责与 style-small.tex 完全对应：页面几何 + 文档字号 + 边距 + 页脚。
+% 大版特征：24 × 13.5 cm（同样 16:9，面积约为小版的 2.3 倍）、14pt；
+%   页脚保留灰色横线与底部留白。
+% =============================================================================
+
+% 文档字号：14pt
+\PassOptionsToClass{14pt}{beamer}
+
+% 页面尺寸：24 × 13.5 cm，仍是 16:9
+\newcommand{\SlideGeometry}{\geometry{paperwidth=24cm,paperheight=13.5cm}}
+
+% 左右边距：随页面变大而加宽
+\newcommand{\InkMargin}{1.2cm}
+
+% \sourceNote 的字号：大版用 \footnotesize
+\newcommand{\SourceNoteSize}{\footnotesize}
+
+% 版式相关字号与页脚
+\newcommand{\ApplySlideStyle}{%
+  \setbeamerfont{title}{size=\fontsize{28}{34}}
+  \setbeamerfont{frametitle}{size=\fontsize{22}{27}}
+  \setbeamerfont{section title}{size=\fontsize{26}{32}}
+  \setbeamerfont{block title}{size=\fontsize{15}{19}}
+  \setbeamerfont{subsection in toc}{size=\footnotesize}
+  \setbeamerfont{footnote}{size=\footnotesize}
+  \setbeamerfont{page number in head/foot}{size=\footnotesize}
+  % 大版页脚：灰色细横线 + 页码 + 底部留白
+  \setbeamertemplate{footline}{%
+    \hbox to\paperwidth{\hskip\InkMargin
+      \begin{minipage}{\dimexpr\paperwidth-\InkMargin-\InkMargin\relax}
+        {\color{InkLine}\hrule height0.35pt}
+        \vskip0.18cm
+        \InkPageNumber
+      \end{minipage}\hskip\InkMargin}%
+    \vskip0.45cm}}

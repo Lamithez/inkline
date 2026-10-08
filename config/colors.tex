@@ -1,0 +1,57 @@
+% =============================================================================
+% colors.tex —— 墨线主题配色
+% -----------------------------------------------------------------------------
+% 只有四组基础色 + 三个 Block 语义色。所有颜色集中在此，
+% 换配色时不需要碰版式、Block 结构或任何正文文件。
+% 语义约定（正文里按语义选色，不要记十六进制值）：
+%   Ink           深墨色，标题与正文
+%   AcademicBlue  主题蓝，结构色（页标题横线、编号、\alert、\keypoint、普通 Block）
+%   AcademicGray  辅助灰，来源说明、副信息
+%   InkLine       浅灰线，仅用于大版页脚横线与图片占位框
+%   InkAlert      砖红，警示 / 限制 / 注意事项（alertblock）
+%   InkExample    灰绿，算例 / 实验设置 / 应用场景（exampleblock）
+% 配色思路参考 UCL Beamer 的深色标题栏 + 同色系浅色正文背景，
+% 以及 Metropolis 对「警示」与「示例」的语义区分；
+% 但只使用 Beamer / xcolor 原生能力，不依赖任何外部主题。
+% =============================================================================
+
+\usetheme{default}
+
+% 基础色
+\definecolor{AcademicBlue}{HTML}{345D82}   % 主题蓝：结构、强调、标题横线
+\definecolor{AcademicGray}{HTML}{6E7A85}   % 辅助灰：来源说明与小字
+\definecolor{Ink}{HTML}{17212B}            % 深墨色：标题与正文
+\definecolor{InkLine}{HTML}{AAB4BB}        % 线条灰：页脚横线、占位框
+
+% Block 语义色：说明用墨蓝、警示用砖红、示例用灰绿
+\definecolor{InkAlert}{HTML}{9B493F}       % 警示块
+\definecolor{InkExample}{HTML}{35695A}     % 示例块
+
+% 全局文字与结构色
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{structure}{fg=AcademicBlue}
+\setbeamercolor{title}{fg=Ink}
+\setbeamercolor{section title}{fg=Ink}
+\setbeamercolor{frametitle}{fg=Ink,bg=white}
+% \alert 与 \keypoint 都用主题蓝加粗
+\setbeamercolor{alerted text}{fg=AcademicBlue}
+\setbeamerfont{alerted text}{series=\bfseries}
+
+% Block 三色：标题栏用 88% 混色 + 白字，正文背景用 16% 混色，
+% 数值越小越淡。加星号清除默认的颜色继承链，
+% 避免「块内强调色」与「标题色」互相引用造成颜色串味。
+\setbeamercolor*{block title}{fg=white,bg=AcademicBlue!88!white}
+\setbeamercolor*{block body}{fg=Ink,bg=AcademicBlue!16!white}
+\setbeamercolor*{block title alerted}{fg=white,bg=InkAlert!88!white}
+\setbeamercolor*{block body alerted}{fg=Ink,bg=InkAlert!16!white}
+\setbeamercolor*{block title example}{fg=white,bg=InkExample!88!white}
+\setbeamercolor*{block body example}{fg=Ink,bg=InkExample!16!white}
+
+% 页脚页码颜色（字号在各 style-*.tex 中设置）
+\setbeamercolor{page number in head/foot}{fg=AcademicBlue}
+
+% 文献表配色：作者与标题用黑色，出处与附注用灰色
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black}
+\setbeamercolor{bibliography entry location}{fg=AcademicGray}
+\setbeamercolor{bibliography entry note}{fg=AcademicGray}

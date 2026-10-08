@@ -1,0 +1,28 @@
+% 附录：\appendix 由 main.tex 发出，因此本文件内的 \section 自动成为附录 A，
+% 页码也切换为独立的 A-1 / A-3 编号（见 config/layout.tex）。
+% 不需要附录时，把 main.tex 里的 \appendix 与该文件的 \input 一起删除即可。
+\section{附录}
+
+\begin{frame}[allowframebreaks]{参考文献}
+  \small
+  \printbibliography[heading=none]
+\end{frame}
+
+% 术语与符号表：首次出现的缩写或记号可在此统一解释，避免正文反复展开
+\begin{frame}{术语与符号}
+  \small
+  \begin{tabularx}{\linewidth}{@{}lY@{}}
+    \toprule
+    符号 / 缩写 & 含义 \\
+    \midrule
+    符号 A & 在此给出定义与单位 \\
+    缩写 B & 全称及首次出现位置 \\
+    缩写 C & 全称及首次出现位置 \\
+    \bottomrule
+  \end{tabularx}
+  \sourceNote{符号表按正文出现顺序排列；正式使用时替换为实际记号。}
+\end{frame}
+
+\begin{frame}{补充材料}
+  此处可放置方法细节、额外数据、术语定义或备用图表。
+\end{frame}

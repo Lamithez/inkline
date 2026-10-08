@@ -1,0 +1,18 @@
+# 默认按内容自动判断文本/二进制；文本文件统一以 LF 存入仓库，
+# 避免 Windows 的 CRLF 与其它平台互相产生虚假 diff。
+* text=auto
+
+# LaTeX 源码与文献库固定 LF，保证跨平台 diff 干净
+*.tex text eol=lf
+*.bib text eol=lf
+*.sty text eol=lf
+*.cls text eol=lf
+
+# 二进制资源不做换行转换，也不参与文本 diff
+*.otf binary
+*.ttf binary
+*.ttc binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
