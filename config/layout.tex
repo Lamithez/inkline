@@ -39,6 +39,32 @@
 \setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries}
 \setbeamerfont{section title}{family=\rmfamily,series=\bfseries}
 
+% 封面保留原有字段与字号，空的作者/单位不占位，使标题与日期更紧凑。
+\setbeamertemplate{title page}{%
+  \begingroup
+  \centering\setlength{\parskip}{0pt}%
+  % 原生圆角色盒，无阴影；宽度随页面缩放，长标题可自动换行。
+  \noindent\makebox[\textwidth][c]{%
+    \begin{minipage}{0.84\textwidth}
+      \begin{beamercolorbox}[wd=\linewidth,sep=0.9em,center,rounded=true,shadow=false]{title panel}
+        \usebeamerfont{title}\inserttitle\par
+      \end{beamercolorbox}
+    \end{minipage}}\par
+  \ifx\insertsubtitle\empty\else
+    \vspace{0.5em}%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \fi
+  \ifx\insertauthor\empty\else
+    \vspace{1em}{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+  \fi
+  \ifx\insertinstitute\empty\else
+    \vspace{0.5em}{\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+  \fi
+  \vspace{1.4em}%
+  {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+  {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}%
+  \endgroup}
+
 % 关闭右下角导航图标；文献表不显示条目图标
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{bibliography item}{}
@@ -52,6 +78,12 @@
 \setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel.}
 \setbeamertemplate{itemize item}{\small\textbullet}
 \setbeamertemplate{itemize subitem}{\textendash}
+
+% 单栏短要点：适度下移起点并拉开条目，不影响目录、双栏与块内列表。
+\newenvironment{keypoints}{%
+  \par\vspace{0.12cm}%
+  \begin{enumerate}\setlength{\itemsep}{0.55em}%
+}{\end{enumerate}}
 
 % -----------------------------------------------------------------------------
 % 3. 页脚与页码（含附录独立编号）
@@ -115,7 +147,7 @@
   \begin{frame}[plain,c,noframenumbering]
     \centering
     {\usebeamerfont{section title}\usebeamercolor[fg]{section title}%
-      \insertsectionnumber.\enspace\insertsection\par}
+      {\color{AcademicBlue}\insertsectionnumber.}\enspace\insertsection\par}
   \end{frame}
 }
 
@@ -126,6 +158,7 @@
     {\normalsize\color{AcademicGray}%
       \insertsectionnumber.\enspace\insertsection\par}
     \vspace{0.8em}
-    {\usebeamerfont{section title}\usebeamercolor[fg]{section title}\insertsectionnumber.\insertsubsectionnumber\enspace\insertsubsection\par}
+    {\usebeamerfont{section title}\usebeamercolor[fg]{section title}%
+      {\color{AcademicBlue}\insertsectionnumber.\insertsubsectionnumber}\enspace\insertsubsection\par}
   \end{frame}
 }

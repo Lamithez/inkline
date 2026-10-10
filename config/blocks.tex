@@ -27,6 +27,9 @@
 % shadow=false 与规范所述「无阴影」一致；width=\linewidth 让块自适应单栏或分栏。
 \newcommand{\InkBlockBegin}[1]{%
   \par\vskip\medskipamount
+  % 原生圆角盒在左右各向外延伸 4bp；内缩后让外框与正文边界对齐。
+  \noindent\hspace*{4bp}%
+  \begin{minipage}{\dimexpr\linewidth-8bp\relax}
   \setlength{\InkBlockInnerWidth}{\dimexpr\linewidth-\InkBlockPadding-\InkBlockPadding\relax}%
   \begin{beamerboxesrounded}[upper=block title#1,lower=block body#1,width=\linewidth,shadow=false]{%
     \noindent\hspace*{\InkBlockPadding}%
@@ -42,7 +45,8 @@
 % 块结束：补上正文下边距并闭合两层盒子
 \newcommand{\InkBlockEnd}{%
       \par\vspace*{0.6ex}%
-    \end{minipage}\end{beamerboxesrounded}\vskip\smallskipamount}
+    \end{minipage}\end{beamerboxesrounded}%
+  \end{minipage}\par\vskip\smallskipamount}
 
 % 把上面两个宏挂到 Beamer 的 six 个 Block 模板上
 \setbeamertemplate{block begin}{\InkBlockBegin{}}

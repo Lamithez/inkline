@@ -20,7 +20,7 @@ tectonic main.tex
 | --- | --- |
 | `main.tex` | 唯一编译入口，控制章节顺序 |
 | `config/style-small.tex` | 小版：16 × 9 cm、11pt，页脚只有页码（默认） |
-| `config/style-large.tex` | 大版：24 × 13.5 cm、14pt，页脚有灰色横线 |
+| `config/style-large.tex` | 大版：24 × 13.5 cm、14pt，页脚只有页码 |
 | `config/base.tex` | 宏包、中文字体、表格、文献、`\keypoint` 等命令 |
 | `config/colors.tex` | 墨线配色与三色 Block 语义色 |
 | `config/layout.tex` | 页标题、边距、页脚与页码、过渡页、目录模板 |
@@ -36,7 +36,7 @@ tectonic main.tex
 
 ## 切换版式
 
-只改 `main.tex` 第 1 行即可，两版共用正文、字体、配色与图片：
+只改 `main.tex` 中「选择版式」下的这一行即可，两版共用正文、字体、配色与图片：
 
 ```latex
 \input{config/style-small}   % 改成 style-large 即切换到大版
@@ -46,7 +46,20 @@ tectonic main.tex
 | --- | --- | --- |
 | 页面 / 字号 | 16 × 9 cm，11pt | 24 × 13.5 cm，14pt |
 | 左右边距 | 0.9cm | 1.2cm |
-| 页脚 | 仅「当前 / 总」 | 灰色细横线 + 页码 + 底部留白 |
+| 页脚 | 仅「当前 / 总」 | 仅「当前 / 总」 |
+
+仓库中的 `main-small.pdf` 与 `main-large.pdf` 是两版预览；切换样式并编译后，
+`main.pdf` 对应当前选择的样式，默认与小版一致。
+
+## 版式微调
+
+- 封面主标题使用淡灰色圆角背景，无阴影；背景色在 `config/colors.tex` 的 `title panel` 中设置。
+  封面、章节与小节过渡页不显示短横线；章节编号用主题蓝，标题保持深墨色。
+- 圆角 Block 外边缘与标题横线、正文边界对齐，保留三色、字号及内边距。
+- 表格保持衬线体与三线表，行距为 `1.2`（`config/base.tex` 的 `\InkTableStyle`），表头使用 `\textbf`。
+- 单栏短列表可使用 `\begin{keypoints} ... \end{keypoints}`，内容写法与 `enumerate` 相同。
+  它增加少量顶部留白与条目间距；双栏或 Block 内仍可使用普通列表。
+- 两版字号、目录和正文内容保持原有设置。
 
 ## 常用写法
 

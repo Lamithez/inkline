@@ -56,8 +56,9 @@
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 % 表格统一使用衬线体：中文为思源宋体、西文为 Latin Modern Roman。
 % 用环境分组包住，保证表外的正文与来源说明仍用原字体。
-\AtBeginEnvironment{tabular}{\rmfamily}
-\AtBeginEnvironment{tabularx}{\rmfamily}
+\newcommand{\InkTableStyle}{\rmfamily\renewcommand{\arraystretch}{1.2}}
+\AtBeginEnvironment{tabular}{\InkTableStyle}
+\AtBeginEnvironment{tabularx}{\InkTableStyle}
 
 % -----------------------------------------------------------------------------
 % 3. 图片与链接
