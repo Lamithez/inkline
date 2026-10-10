@@ -33,7 +33,6 @@ tectonic main.tex
 | `references/references.bib` | 文献库 |
 | `figures/` | 图片资源（含占位图与说明） |
 | `fonts/` | 随附思源宋体、思源黑体及许可证，无需安装到系统 |
-| `引用与引文语法.md` | 引文、引用文献、脚注的语法速查 |
 
 ## 切换版式
 
@@ -83,8 +82,6 @@ biblatex 的 `\bibfont` 钩子设置，在 frame 里写 `\TimesCite` 会被 bibl
 使用 `biblatex + BibTeX`（作者年份制），文献表自动列出已引用条目并支持分页。`references.bib` 中的 `example2026` 是虚构示例，正式使用前请替换。
 
 **Tectonic 不带 biber**：把 `config/base.tex` 的后端改成 `biber` 会以 `error: program not found` 失败。若需要 biber 的完整多语种（中文作者名、排序）支持，请改用带 biber 的 XeLaTeX 工具链编译，或在 Overleaf 上选择 XeLaTeX + Biber。
-
-引文、引用与脚注的完整语法对照见 [引用与引文语法.md](引用与引文语法.md)。
 
 ## 编译排查
 
