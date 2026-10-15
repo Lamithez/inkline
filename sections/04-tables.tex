@@ -1,5 +1,7 @@
+% 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{表格}
 \subsection{三线表与表头}
+% 每个表头单元格使用 \tablehead；booktabs 提供 top/mid/bottomrule。
 \begin{frame}[fragile]{三线表与粗体表头}
   \begin{tabular}{@{}lrr@{}}
     \toprule
@@ -32,6 +34,7 @@
   不需要手工在每个单元格中插入换行。}
 \end{frame}
 
+% 合并表头：\multicolumn{列数}{对齐}{\tablehead{标题}}；caption 后放 label。
 \begin{frame}{合并表头与表格引用}
   \begin{table}
     \centering
@@ -47,10 +50,11 @@
       \bottomrule
     \end{tabular}
     \caption{两组数据集上的示例结果}\label{tab:demo}
+    \sourceNote{数值为排版示例，不代表实际实验结果。}
   \end{table}
   表~\ref{tab:demo} 演示 multicolumn 合并单元格与 cmidrule 分组横线。
-  \sourceNote{数值为排版示例，不代表实际实验结果。}
 \end{frame}
+
 \begin{frame}{分栏与表格}
   \begin{columns}[T,onlytextwidth]
     \column{0.50\textwidth}

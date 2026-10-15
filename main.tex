@@ -7,7 +7,7 @@
 %   1) 先读 style-*.tex：它用 \PassOptionsToClass 传字号，并提供
 %      \SlideGeometry / \ApplySlideStyle / \InkMargin / \SourceNoteSize，
 %      其中 \SlideGeometry 必须在 \documentclass 之后立刻执行。
-%   2) 再读 config/ 下的公共设置：base → colors → layout → blocks → commands。
+%   2) 再读公共设置：base → colors → layout → toc → blocks → commands。
 %   3) 最后 \ApplySlideStyle 施加版式字号与页脚，再读封面元信息。
 % =============================================================================
 
@@ -24,7 +24,8 @@
 % -----------------------------------------------------------------------------
 \input{config/base}       % 宏包、中文字体、表格、文献、正文命令
 \input{config/colors}     % 墨线配色与 Block 语义色
-\input{config/layout}     % 页标题、边距、页脚与页码、过渡页、目录模板
+\input{config/layout}     % 页标题、边距、页脚与页码、过渡页
+\input{config/toc}        % 目录换行、自适应分栏与续页
 \input{config/blocks}     % 三色圆角 Block
 \input{config/commands}   % 目录与脚注字体
 \ApplySlideStyle          % 本版式的字号与页脚
@@ -49,7 +50,7 @@
 % -----------------------------------------------------------------------------
 % 4. 目录（不计入页码）
 % -----------------------------------------------------------------------------
-\begin{frame}[plain,noframenumbering]{目录}
+\begin{frame}[plain,allowframebreaks,noframenumbering]{目录}
   \InkAutoToc
 \end{frame}
 
@@ -65,7 +66,7 @@
 
 % -----------------------------------------------------------------------------
 % 6. 附录（可选）
-%    \appendix 之后页码切换为独立的 A-1 / A-3 编号（见 config/layout.tex）。
+%    \appendix 之后页码切换为 A-当前 / A-总数（见 config/layout.tex）。
 %    参考文献与补充材料都在 90-appendix.tex；不需要附录时删除下面两行。
 % -----------------------------------------------------------------------------
 \appendix

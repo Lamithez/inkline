@@ -1,3 +1,4 @@
+% 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{分栏与图片}
 \subsection{分栏排版}
 \begin{frame}{双栏与不等宽分栏}
@@ -19,11 +20,13 @@
 \end{frame}
 
 \subsection{插图与图题}
+% 用法：\slideimage[高度上限]{文件名}；来源说明放在对应图片所在栏内。
 \begin{frame}{插图与来源标注}
   \begin{columns}[T,onlytextwidth]
     \column{0.54\textwidth}
       \centering
       \slideimage[0.5\textheight]{example-figure.png}
+      \sourceNote{来源：模板内置占位图。}
     \column{0.42\textwidth}
       \begin{itemize}
         \item \texttt{\textbackslash slideimage\{文件名\}}：按栏宽等比缩放。
@@ -31,30 +34,33 @@
         \item 图片统一放在 \texttt{figures/}，只写文件名即可。
       \end{itemize}
   \end{columns}
-  \sourceNote{来源：\texttt{figures/example-figure.png}（占位图，请替换为实际图片）。}
 \end{frame}
 
 \begin{frame}{并排两图}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
       \centering
-      \slideimage[0.42\textheight]{example-figure.png}\\
-      {\small 方案 A}
+      \begin{figure}
+        \slideimage[0.36\textheight]{example-figure.png}
+        \caption{方案 A}
+      \end{figure}
     \column{0.48\textwidth}
       \centering
-      \slideimage[0.42\textheight]{example-figure.png}\\
-      {\small 方案 B}
+      \begin{figure}
+        \slideimage[0.36\textheight]{example-figure.png}
+        \caption{方案 B}
+      \end{figure}
   \end{columns}
   \sourceNote{来源：同一占位图重复使用，正式汇报时替换为两组真实结果。}
 \end{frame}
 
-
+% caption 之后添加 label；通过 ref 引用实际编号，不手写图号。
 \begin{frame}{带图题与交叉引用的图片}
   \begin{figure}
     \centering
     \slideimage[0.36\textheight]{example-figure.png}
     \caption{示例图片与图题}\label{fig:demo}
+    \sourceNote{来源：模板内置占位图。}
   \end{figure}
   图~\ref{fig:demo} 使用 figure、caption 和 label 添加图题与编号引用。
-  \sourceNote{来源：模板内置占位图，正式使用时替换为实际结果。}
 \end{frame}

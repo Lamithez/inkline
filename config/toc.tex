@@ -1,0 +1,98 @@
+% 目录：悬挂缩进、按实际高度分栏；双栏仍超高时交给 frame 自动续页。
+% 依赖 layout.tex；在带 allowframebreaks 的目录 frame 中调用 \InkAutoToc。
+
+% 编号占用固定宽度，小节与章节标题的文字起点对齐。
+\newlength{\InkTocIndent}
+\setlength{\InkTocIndent}{2.4em}
+\newcommand{\InkTocNumber}{%
+  {\setlength{\fboxsep}{0.22em}%
+   \colorbox{AcademicBlue!9!white}{%
+     \makebox[1.1em][c]{\sffamily\bfseries\color{AcademicBlue}%
+       \strut\ifnum\inserttocsectionnumber<10 0\fi\inserttocsectionnumber}}}}
+
+\setbeamertemplate{section in toc}{%
+  \begingroup
+  \par\vskip0.45em
+  % 编号背景不参与行高计算，避免不同标题触发不同的基线间距。
+  \setbox0=\hbox to\InkTocIndent{\smash{\InkTocNumber}\hfil}%
+  \hangindent=\wd0\hangafter=1
+  \leavevmode\box0\strut\inserttocsection\par
+  \endgroup}
+\setbeamertemplate{subsection in toc}{%
+  \begingroup
+  \par\vskip0.3em\nointerlineskip
+  \leftskip=\InkTocIndent
+  \setbox0=\hbox{{\color{AcademicGray}\inserttocsectionnumber.\inserttocsubsectionnumber}\enspace}%
+  \hangindent=\wd0\hangafter=1
+  \leavevmode\box0\strut\inserttocsubsection\par
+  \endgroup}
+
+\newsavebox{\InkTocBox}
+\newsavebox{\InkTocTitleBox}
+\newsavebox{\InkTocLeft}
+\newsavebox{\InkTocRight}
+\newsavebox{\InkTocBestLeft}
+\newsavebox{\InkTocBestRight}
+\newdimen\InkTocAvailable
+\newdimen\InkTocHeight
+\newdimen\InkTocBestHeight
+\newcount\InkTocLastSection
+\newcount\InkTocSplit
+\newcount\InkTocRightStart
+
+% #1 盒子寄存器，#2 排版宽度，#3 tableofcontents 的选项。
+\newcommand{\InkMeasureToc}[3]{%
+  \setbox#1=\vbox{%
+    \hsize=#2\relax\linewidth=\hsize
+    % 抵消 Beamer 目录自带的负顶部间距。
+    \vskip0.5em\tableofcontents[#3]}}
+
+\newcommand{\InkAutoToc}{%
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \global\InkTocLastSection=0
+  \addtobeamertemplate{section in toc}{%
+    \ifnum\inserttocsectionnumber>\InkTocLastSection
+      \global\InkTocLastSection=\inserttocsectionnumber\relax
+    \fi}{}%
+  \InkMeasureToc{\InkTocBox}{\textwidth}{}%
+  \setbox\InkTocTitleBox=\vbox{\hsize=\textwidth\usebeamertemplate{frametitle}}%
+  % allowframebreaks 默认每页使用 95% 的可用高度，预留相同余量。
+  \InkTocAvailable=\dimexpr\textheight-\ht\InkTocTitleBox-\dp\InkTocTitleBox-0.6cm\relax
+  \InkTocAvailable=0.95\InkTocAvailable
+  \par\vspace*{0.15cm}%
+  \ifdim\dimexpr\ht\InkTocBox+\dp\InkTocBox\relax>\InkTocAvailable
+    \InkTocBestHeight=\maxdimen
+    \InkTocSplit=1
+    % 只在章节边界拆分，选取较高一栏最矮的位置，避免小节分布不均。
+    \loop\ifnum\InkTocSplit<\InkTocLastSection
+      \InkTocRightStart=\InkTocSplit \advance\InkTocRightStart by1
+      \InkMeasureToc{\InkTocLeft}{0.48\textwidth}{sections={1-\the\InkTocSplit}}%
+      \InkMeasureToc{\InkTocRight}{0.48\textwidth}{sections={\the\InkTocRightStart-\the\InkTocLastSection}}%
+      \InkTocHeight=\dimexpr\ht\InkTocLeft+\dp\InkTocLeft\relax
+      \ifdim\dimexpr\ht\InkTocRight+\dp\InkTocRight\relax>\InkTocHeight
+        \InkTocHeight=\dimexpr\ht\InkTocRight+\dp\InkTocRight\relax
+      \fi
+      \ifdim\InkTocHeight<\InkTocBestHeight
+        \InkTocBestHeight=\InkTocHeight
+        \setbox\InkTocBestLeft=\copy\InkTocLeft
+        \setbox\InkTocBestRight=\copy\InkTocRight
+      \fi
+      \advance\InkTocSplit by1
+    \repeat
+    \ifdim\InkTocBestHeight>\InkTocAvailable
+      % 不缩小字号或隐藏条目；释放单栏盒子，允许在条目之间分页。
+      \unvbox\InkTocBox
+    \else
+      \noindent
+      \begin{minipage}[t]{0.48\textwidth}
+        \vspace{0pt}\unvbox\InkTocBestLeft
+      \end{minipage}\hfill
+      \begin{minipage}[t]{0.48\textwidth}
+        \vspace{0pt}\unvbox\InkTocBestRight
+      \end{minipage}\par
+    \fi
+  \else
+    \noindent\usebox{\InkTocBox}\par
+  \fi
+  \endgroup}

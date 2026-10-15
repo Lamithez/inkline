@@ -1,3 +1,4 @@
+% 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{公式与分步演示}
 \subsection{公式与数学环境}
 \begin{frame}{行内与行间公式}
@@ -14,7 +15,7 @@
   \end{exampleblock}
 \end{frame}
 
-
+% align 用 & 对齐，eqref 引用公式；pmatrix 与 cases 分别提供矩阵和分段函数。
 \begin{frame}{多行公式、矩阵与分段函数}
   \begin{align}
     \label{eq:demo} f(x) &= (x+1)^2 \\
@@ -28,6 +29,7 @@
   \slideNote{pmatrix 提供带圆括号的矩阵，cases 用于分段函数。
   使用 \texttt{\&} 设置对齐点，双反斜线换行。}
 \end{frame}
+
 \begin{frame}{定义、定理与证明}
   \begin{definition}[样本均值]
     对 $n\geq1$ 个实数 $x_1,\ldots,x_n$，定义
@@ -43,7 +45,6 @@
     将不等式求和，再除以 $n$ 即得结论。
   \end{proof}
 \end{frame}
-
 
 \subsection{逐步展示与链接}
 \begin{frame}{分步显示}
@@ -67,7 +68,7 @@
   \end{itemize}
 \end{frame}
 
-
+% uncover 保留空间；only 不保留隐藏内容；overlayarea 固定替换区域高度。
 \begin{frame}[label=overlay-demo]{固定布局与替换内容}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}

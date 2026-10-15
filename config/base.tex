@@ -1,8 +1,7 @@
 % =============================================================================
 % base.tex —— 基础层：宏包、中文字体、表格、文献、正文用自定义命令
 % -----------------------------------------------------------------------------
-% 加载顺序（见 main.tex）：style-* → \documentclass → base → colors → layout
-%   → blocks → commands → \ApplySlideStyle → metadata
+% 加载顺序见 main.tex；本文件在 Beamer 类之后、其余公共配置之前加载。
 % 本文件只依赖「已经载入 beamer」这一前提，不依赖配色与版式设置。
 % =============================================================================
 
@@ -17,12 +16,15 @@
 
 % 字体策略：优先使用随项目携带的思源宋体/黑体（fonts/ 目录，无需系统安装）；
 % 如果这些 OTF 被删掉，则回退到 TeX 发行版自带的 Fandol。
-% 注意：Regular 与 Bold 必须成对保留，且回退时字体名也要一起回退，
-%       否则 \textbf 会指向不存在的字重而报错。
+% 四个文件必须全部存在，避免字体的 Regular / Bold 指向缺失文件。
 % 中文没有西文意义上的 italic：斜体统一映射到 Fandol 楷体，
 % 粗斜体保持黑体/宋体粗体，避免出现伪斜体。
-\IfFileExists{fonts/SourceHanSerifCN-Regular.otf}{%
-  % 有思源宋体：正文衬线族
+\newif\ifInkBundledFonts
+\InkBundledFontstrue
+\newcommand{\InkCheckFont}[1]{\IfFileExists{fonts/#1}{}{\InkBundledFontsfalse}}
+\forcsvlist{\InkCheckFont}{SourceHanSerifCN-Regular.otf,SourceHanSerifCN-Bold.otf,SourceHanSansCN-Regular.otf,SourceHanSansCN-Bold.otf}
+\ifInkBundledFonts
+  % 完整思源字体：衬线、无衬线与中文等宽族
   \setCJKmainfont{SourceHanSerifCN-Regular.otf}[Path=fonts/,
     BoldFont=SourceHanSerifCN-Bold.otf,
     ItalicFont=FandolKai-Regular.otf,ItalicFeatures={Path=},
@@ -36,15 +38,15 @@
     BoldFont=SourceHanSansCN-Bold.otf,
     ItalicFont=FandolKai-Regular.otf,ItalicFeatures={Path=},
     BoldItalicFont=SourceHanSansCN-Bold.otf]%
-}{%
-  % 无思源字体：整套回退到 Fandol（宋体正文、黑体无衬线、仿宋等宽）
+\else
+  % 思源字体不完整：整套回退到 Fandol
   \setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf,
     ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolSong-Bold.otf]%
   \setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf,
     ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolHei-Bold.otf]%
   \setCJKmonofont{FandolFang-Regular.otf}[BoldFont=FandolHei-Bold.otf,
     ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolHei-Bold.otf]%
-}
+\fi
 % 西文保留 Latin Modern（beamer 默认），无需额外设置。
 
 % -----------------------------------------------------------------------------
@@ -73,13 +75,12 @@
 % -----------------------------------------------------------------------------
 % 4. 引用类文字的专用字体（Times 风格）
 % -----------------------------------------------------------------------------
-% 需求：参考文献、正文引用、引文块与脚注统一使用 Times 一类的衬线体，
+% 参考文献、引文块与脚注使用 Times 风格衬线体，
 %       而正文西文仍保留 Latin Modern。
 % 说明：TeX 发行版不自带 Times New Roman（商业字体），这里使用其度量兼容的
 %       TeX Gyre Termes（Nimbus Roman No9 的再发布版），字形与 Times New Roman
 %       基本一致，且随 Tectonic / TeX Live 一起分发，无需额外安装。
-% 加载方式用**文件名**而不是字体名：实测 Tectonic 下 fontspec 找不到
-%       "TeX Gyre Termes" 这个 family 名，直接给文件名才能解析。
+% 使用文件名加载，避免依赖系统字体索引。
 % 若某套发行版只提供 X 变体，则回退到 TeXGyreTermesX-*.otf，保证仍可编译。
 \IfFileExists{texgyretermes-regular.otf}{%
   \newfontfamily\TimesCite{texgyretermes-regular.otf}[%
@@ -96,9 +97,7 @@
 % 引用块环境：沿用 LaTeX 标准名 quote / quotation，但换成 Times 风格字体。
 % quote 适合较短引文（整段缩进、无首行缩进）；
 % quotation 适合多段落长引文（整段缩进且首行再缩进）。
-% quote / quotation 在 LaTeX 内核里是「命令式环境」（只有 \quote/\endquote，
-% 没有对应的 \quote...\endquote 环境名），所以先用 \let 备份原命令，
-% 再在原命令外层包一层字体切换，避免 \renewenvironment 找不到原定义。
+% 保存原始环境命令，包裹字体切换并保持原有缩进和分段规则。
 \let\origquote\quote
 \let\endorigquote\endquote
 \let\origquotation\quotation
@@ -124,8 +123,7 @@
 \addbibresource{references/references.bib}
 
 % 参考文献表字体：必须通过 biblatex 的 \bibfont 钩子设置。
-% 实测在 frame 内写 \TimesCite 或不带参数的 \AtBeginBibliography{\TimesCite}
-% 都会被 biblatex 在排版条目时重置回正文字体，只有 \bibfont 能稳定生效。
+% 在 \bibfont 中设置，避免条目排版时重置回正文字体。
 \renewcommand{\bibfont}{\TimesCite}
 
 % csquotes：提供语言自适应的引号命令 \enquote{...} 与长引文 \blockquote{...}，
@@ -135,7 +133,7 @@
 % -----------------------------------------------------------------------------
 % 6. 正文中使用的可复用命令
 % -----------------------------------------------------------------------------
-% 突出重点：使用主题结构色 + 粗体（\alert 也可，见 commands.tex 的说明）
+% 突出重点：使用主题结构色 + 粗体。
 \newcommand{\keypoint}[1]{\structure{\textbf{#1}}}
 
 % 独立段落注释：无标题栏的浅灰圆角盒，小一号灰色直立正文。

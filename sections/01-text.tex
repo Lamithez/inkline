@@ -1,7 +1,8 @@
-% 基础文字、框架与列表；以下 frame 均可直接复制。
+% 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{文字与列表}
 \subsection{页面与文字}
 
+% 含 verbatim 的 frame 必须使用 fragile；示例中的结束行带注释，避免被外层提前识别。
 \begin{frame}[fragile]{页面与章节的基本写法}
   \begin{verbatim}
 \section{章节名}
@@ -27,6 +28,7 @@
 \end{frame}
 
 \subsection{列表与代码}
+% 嵌套列表：在 item 内再放入 itemize / enumerate 环境。
 \begin{frame}{无序、有序与嵌套列表}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
@@ -70,6 +72,7 @@
       \end{description}
   \end{columns}
 \end{frame}
+
 \begin{frame}{网址、路径与特殊字符}
   \begin{itemize}
     \item 网址：\url{https://ctan.org/pkg/beamer}
@@ -85,7 +88,6 @@
     \texttt{\textbackslash begin\{frame\}[fragile]} 后使用 verbatim 环境。
   \end{block}
 \end{frame}
-
 
 \begin{frame}[fragile]{整段代码与原样文本}
   页面声明：\verb|\begin{frame}[fragile]{代码示例}|。

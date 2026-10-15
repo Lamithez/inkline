@@ -1,7 +1,7 @@
 % =============================================================================
 % layout.tex —— 版式层：页标题、边距、页脚与页码、过渡页、目录与列表模板
 % -----------------------------------------------------------------------------
-% 依赖：colors.tex（字体颜色）、style-*.tex（\InkMargin、\InkTopRule 等）。
+% 依赖：colors.tex（字体颜色）、style-*.tex（\InkMargin）。
 % 本文件是「改版面观感」的主要入口。
 % =============================================================================
 
@@ -23,7 +23,8 @@
     \vskip0.35cm
     \usebeamerfont{frametitle}\strut\insertframetitle\strut\par
     \ifx\insertframesubtitle\empty\else
-      {\usebeamerfont{framesubtitle}\insertframesubtitle\par}%
+      \vskip0.2em
+      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}%
     \fi
     \vskip0.12cm
     {\color{AcademicBlue}\hrule height\InkTopRule}
@@ -37,6 +38,7 @@
 % 标题、章节页用衬线粗体（中文即思源宋体 Bold）
 \setbeamerfont{title}{family=\rmfamily,series=\bfseries}
 \setbeamerfont{frametitle}{family=\rmfamily,series=\bfseries}
+\setbeamerfont{framesubtitle}{family=\sffamily,series=\mdseries,shape=\upshape}
 \setbeamerfont{section title}{family=\rmfamily,series=\bfseries}
 
 % 封面保留原有字段与字号，空的作者/单位不占位，使标题与日期更紧凑。
@@ -70,6 +72,9 @@
 \setbeamertemplate{bibliography item}{}
 % 图表编号
 \setbeamertemplate{caption}[numbered]
+% 图表采用相同的题注间距；图表专属来源在对应 figure/table 内排版。
+\setlength{\abovecaptionskip}{0.45em}
+\setlength{\belowcaptionskip}{0.35em}
 
 % -----------------------------------------------------------------------------
 % 2. 列表模板
@@ -95,10 +100,7 @@
 %   \insertframenumberinappendix   附录内第几页（从 1 开始）
 %   \insertappendixframenumber     附录总页数
 % 这两个计数器由 Beamer 在 \appendix 时维护，并借助 .nav 辅助文件跨轮传递，
-% 因此不需要手工硬编码任何数字，也不需要自己加计数器。
-% 注意：绝不能在页脚里判断 \ifbeamer@inappendix —— 该条件在导言区
-%       渲染页脚时还未就绪，会直接报 Undefined control sequence。
-%       正确做法是用下面的 \appendix 包装，在进入附录时切换模板。
+% 页码由 Beamer 维护；在进入附录时切换模板，不在页脚中读取内部模式条件。
 \defbeamertemplate*{page number in head/foot}{inkappendixframenumber}{%
   A-\insertframenumberinappendix\,/\,A-\insertappendixframenumber}
 
@@ -116,7 +118,7 @@
   \usebeamertemplate***{page number in head/foot}\par}
 
 % 包装 \appendix：先执行 Beamer 原本的附录处理（进入附录模式、写入计数器），
-% 再把页码模板切换到附录版本。这样附录页脚显示 A-1 / A-3 式编号，
+% 再把页码模板切换到附录版本。这样附录页脚显示 A-当前 / A-总数，
 % 而正文始终保持「当前 / 总」不变。
 \let\InkAppendixOriginal\appendix
 \renewcommand{\appendix}{%
@@ -124,59 +126,7 @@
   \global\def\InkPageNumberStyle{inkappendixframenumber}}
 
 % -----------------------------------------------------------------------------
-% 4. 目录
-% -----------------------------------------------------------------------------
-% 一级目录带编号（1. 研究背景）；二级目录用紧凑自定义模板：左缩进 2em，
-% 形如「3.1 小节名」，避免默认模板占用的额外竖直空间。
-\setbeamertemplate{section in toc}[sections numbered]
-\setbeamertemplate{subsection in toc}{%
-  \leavevmode\leftskip=2em\relax
-  \inserttocsectionnumber.\inserttocsubsectionnumber\enspace
-  \inserttocsubsection\par}
-
-% 目录先按单栏测量自然高度，放不下才按完整章节拆成两栏。
-% 不硬编码章节数量；测量时记录实际进入目录的最后一个章节编号。
-\newsavebox{\InkTocBox}
-\newsavebox{\InkTocTitleBox}
-\newdimen\InkTocAvailable
-\newcount\InkTocLastSection
-\newcount\InkTocSplit
-\newcount\InkTocRightStart
-\newcommand{\InkAutoToc}{%
-  \begingroup
-  \setlength{\parskip}{0pt}%
-  \global\InkTocLastSection=0
-  \addtobeamertemplate{section in toc}{%
-    \ifnum\inserttocsectionnumber>\InkTocLastSection
-      \global\InkTocLastSection=\inserttocsectionnumber\relax
-    \fi}{}%
-  \setbox\InkTocBox=\vbox{%
-    \hsize=\textwidth
-    % 抵消 Beamer 目录自带的 -0.5em 顶部间距，恢复标题后的留白。
-    \vskip0.5em\tableofcontents}%
-  \setbox\InkTocTitleBox=\vbox{\hsize=\textwidth\usebeamertemplate{frametitle}}%
-  % 扣除标题区以及目录顶部、底部的安全留白。
-  \InkTocAvailable=\dimexpr\textheight-\ht\InkTocTitleBox-\dp\InkTocTitleBox-0.6cm\relax
-  \par\vspace*{0.15cm}\noindent
-  \ifdim\dimexpr\ht\InkTocBox+\dp\InkTocBox\relax>\InkTocAvailable
-    \InkTocSplit=\InkTocLastSection
-    \advance\InkTocSplit by1 \divide\InkTocSplit by2
-    \InkTocRightStart=\InkTocSplit \advance\InkTocRightStart by1
-    \begin{minipage}[t]{0.48\textwidth}
-      \vspace{0pt}\vskip0.5em
-      \tableofcontents[sections={1-\the\InkTocSplit}]
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.48\textwidth}
-      \vspace{0pt}\vskip0.5em
-      \tableofcontents[sections={\the\InkTocRightStart-\the\InkTocLastSection}]
-    \end{minipage}%
-  \else
-    \usebox{\InkTocBox}%
-  \fi
-  \par\endgroup}
-
-% -----------------------------------------------------------------------------
-% 5. 章节与小节过渡页
+% 4. 章节与小节过渡页
 % -----------------------------------------------------------------------------
 % 写在 frame 之外的 \section / \subsection 会自动插入一张居中过渡页，
 % 无需手写额外 frame。两类过渡页都不显示页码（noframenumbering），

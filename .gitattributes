@@ -7,6 +7,9 @@
 *.bib text eol=lf
 *.sty text eol=lf
 *.cls text eol=lf
+*.md text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
 
 # 二进制资源不做换行转换，也不参与文本 diff
 *.otf binary

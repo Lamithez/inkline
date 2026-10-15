@@ -17,10 +17,13 @@
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*-blx.bib
 
 # 临时对比文件与 Tectonic 本地缓存
 main-before.pdf
 .tectonic/
+.work/
+tmp/
 
 # ---------------------------------------------------------------------------
 # 系统与编辑器

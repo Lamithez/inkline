@@ -1,3 +1,4 @@
+% 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{Block 与注释}
 \subsection{三色块与组合}
 \begin{frame}{Block 样式示例}
@@ -14,6 +15,7 @@
   \end{exampleblock}
 \end{frame}
 
+% 三色环境：block / alertblock / exampleblock；分栏使用 [T,onlytextwidth]。
 \begin{frame}{Block 中的列表与双栏}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
@@ -41,8 +43,8 @@
   \end{exampleblock}
 \end{frame}
 
-
 \subsection{独立段落注释}
+% 用法：\slideNote{补充说明}；结束后恢复正文样式。
 \begin{frame}[fragile]{正文中的段落注释}
   这是正常正文，用于陈述主要观点和分析结果。
   \slideNote{这是一段补充注释：可以解释假设、范围或阅读提示。

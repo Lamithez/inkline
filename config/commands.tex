@@ -8,11 +8,11 @@
 % -----------------------------------------------------------------------------
 % 1. 目录（两级）字体
 % -----------------------------------------------------------------------------
-% 一级目录：正文尺寸 + 衬线 + Slanted；二级目录：小字号 + 衬线 + Slanted。
+% 一级目录：正文尺寸 + 衬线粗体；二级目录：小字号 + 无衬线常规字重。
 % 具体字号在各 style-*.tex 中覆盖（小版 \scriptsize，大版 \footnotesize），
 % 这里只固定字族与字形，保证两版一致。
-\setbeamerfont{section in toc}{size=\normalsize,family=\rmfamily,shape=\slshape}
-\setbeamerfont{subsection in toc}{family=\rmfamily,shape=\slshape}
+\setbeamerfont{section in toc}{size=\normalsize,family=\rmfamily,series=\bfseries,shape=\upshape}
+\setbeamerfont{subsection in toc}{family=\sffamily,series=\mdseries,shape=\upshape}
 
 % -----------------------------------------------------------------------------
 % 2. 脚注
