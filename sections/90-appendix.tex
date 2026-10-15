@@ -1,4 +1,4 @@
-% 附录：\appendix 由 main.tex 发出，因此本文件内的 \section 自动成为附录 A，
+% 附录：\appendix 由 main.tex 发出，附录页码独立计数，
 % 页码也切换为独立的 A-1 / A-3 编号（见 config/layout.tex）。
 % 不需要附录时，把 main.tex 里的 \appendix 与该文件的 \input 一起删除即可。
 \section{附录}
@@ -15,7 +15,7 @@
   \small
   \begin{tabularx}{\linewidth}{@{}lY@{}}
     \toprule
-    \textbf{符号 / 缩写} & \textbf{含义} \\
+    \tablehead{符号 / 缩写} & \tablehead{含义} \\
     \midrule
     符号 A & 在此给出定义与单位 \\
     缩写 B & 全称及首次出现位置 \\
@@ -25,6 +25,28 @@
   \sourceNote{符号表按正文出现顺序排列；正式使用时替换为实际记号。}
 \end{frame}
 
-\begin{frame}{补充材料}
-  此处可放置方法细节、额外数据、术语定义或备用图表。
+
+% framebreak 手动分页；内容过长时 allowframebreaks 也可自动分页。
+\begin{frame}[allowframebreaks]{长内容续页}
+  \textbf{第一页}
+  \begin{itemize}
+    \item allowframebreaks 允许一个 frame 分成多页。
+    \item framebreak 可在需要的位置手动分页。
+  \end{itemize}
+  \slideNote{续页标题会追加序号。此示例放在附录，以便同时查看附录页码。}
+  \framebreak
+  \textbf{第二页}
+  \begin{itemize}
+    \item 长文献列表可按相同方式自动分页。
+    \item 分步动画请使用普通 frame，避免与自动分页混用。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[plain,c,noframenumbering]
+  \centering
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}示例结束\par}
+  \vspace{0.8em}
+  普通汇报可在这里放置结束语。
+  \slideNote{plain 隐藏页眉页脚；c 让内容垂直居中；
+  noframenumbering 使此页不占用页码。}
 \end{frame}

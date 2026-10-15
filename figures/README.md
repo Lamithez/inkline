@@ -21,5 +21,5 @@
 ## 占位图
 
 `example-figure.png` 是 1280 × 720（16:9）的程序生成占位图，供
-`sections/03-analysis.tex` 与 `sections/05-examples.tex` 演示图片用法。
+`sections/03-figures.tex` 演示图文分栏、并排图片、图题与交叉引用。
 正式使用时直接用同名文件覆盖，或改名后同步修改正文中的文件名。

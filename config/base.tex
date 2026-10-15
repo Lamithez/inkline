@@ -54,6 +54,8 @@
 % tabularx 提供自适应列宽，下面定义 Y 列 = 自动宽度 + 左对齐（避免两端对齐的稀疏感）。
 \usepackage{booktabs,tabularx}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% 表头按单元格显式标记；普通表格、自动宽度表格与合并单元格均可复用。
+\newcommand{\tablehead}[1]{\textbf{#1}}
 % 表格统一使用衬线体：中文为思源宋体、西文为 Latin Modern Roman。
 % 用环境分组包住，保证表外的正文与来源说明仍用原字体。
 \newcommand{\InkTableStyle}{\rmfamily\renewcommand{\arraystretch}{1.2}}
@@ -135,6 +137,18 @@
 % -----------------------------------------------------------------------------
 % 突出重点：使用主题结构色 + 粗体（\alert 也可，见 commands.tex 的说明）
 \newcommand{\keypoint}[1]{\structure{\textbf{#1}}}
+
+% 独立段落注释：无标题栏的浅灰圆角盒，小一号灰色直立正文。
+% 原生圆角盒左右各外扩 4bp，内缩后与当前栏边界对齐。
+\newcommand{\slideNote}[1]{%
+  \par\smallskip\begingroup
+  \noindent\hspace*{4bp}%
+  \begin{minipage}{\dimexpr\linewidth-8bp\relax}
+    \begin{beamercolorbox}[wd=\linewidth,sep=0.65em,rounded=true,shadow=false]{annotation}
+      \small\sffamily\mdseries\upshape\raggedright
+      \setlength{\parskip}{0.25em}#1\par
+    \end{beamercolorbox}
+  \end{minipage}\par\endgroup\smallskip}
 
 % 来源说明（图表出处、数据来源）：小字号、灰色、左对齐，无脚注编号。
 % 内容通常是 \parencite 之类的引用，因此一并使用 Times 风格字体。

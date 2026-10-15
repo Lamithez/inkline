@@ -1,0 +1,71 @@
+\section{Block 与注释}
+\subsection{三色块与组合}
+\begin{frame}{Block 样式示例}
+  \begin{block}{普通说明：block}
+    用于研究问题、定义或方法说明。正文可以包含\textbf{粗体}与公式，例如 $E=mc^2$。
+  \end{block}
+
+  \begin{alertblock}{注意事项：alertblock}
+    用于假设、限制和需要关注的结论；可用 \alert{强调文字}标出关键条件。
+  \end{alertblock}
+
+  \begin{exampleblock}{具体示例：exampleblock}
+    用于算例、实验设置或应用场景。例如：对三组数据采用相同指标进行比较。
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Block 中的列表与双栏}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{方法步骤}
+      \begin{enumerate}
+        \item 明确研究对象。
+        \item 统一评价指标。
+        \item 对比实验结果。
+      \end{enumerate}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{比较条件}
+      \begin{itemize}
+        \item 使用相同数据集。
+        \item 记录参数设置。
+        \item 报告适用范围。
+      \end{itemize}
+    \end{alertblock}
+  \end{columns}
+
+  \begin{exampleblock}{带公式的示例}
+    样本均值为 $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$。
+    对样本 $1,2,3$，有 $\bar{x}=2$。
+  \end{exampleblock}
+\end{frame}
+
+
+\subsection{独立段落注释}
+\begin{frame}[fragile]{正文中的段落注释}
+  这是正常正文，用于陈述主要观点和分析结果。
+  \slideNote{这是一段补充注释：可以解释假设、范围或阅读提示。
+  它没有标题栏，采用淡灰圆角背景、小字号灰字，与正文自然区分。}
+  注释结束后，正文恢复原来的字号、颜色和字重。
+  \begin{verbatim}
+\slideNote{这里填写注释内容。}
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}{分栏注释与来源说明}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{方法说明}\par\smallskip
+      这里放置正文段落。
+      \slideNote{注释自动适应当前栏宽，也可包含 $n>0$、\textbf{粗体}和链接。
+
+      空行可分隔注释内部的段落。}
+    \column{0.48\textwidth}
+      \textbf{结果说明}\par\smallskip
+      这里放置另一段正文。
+      \slideNote{slideNote 用于解释正文；sourceNote 用于简短的图表出处。
+      两者的语义和视觉层级不同。}
+  \end{columns}
+  \sourceNote{来源：此处填写数据来源或参考文献。}
+\end{frame}

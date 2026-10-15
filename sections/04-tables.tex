@@ -1,0 +1,76 @@
+\section{表格}
+\subsection{三线表与表头}
+\begin{frame}[fragile]{三线表与粗体表头}
+  \begin{tabular}{@{}lrr@{}}
+    \toprule
+    \tablehead{方法} & \tablehead{准确率} & \tablehead{耗时（秒）} \\
+    \midrule
+    基线 & 0.81 & 12.3 \\
+    改进 & 0.87 & 10.8 \\
+    \bottomrule
+  \end{tabular}
+  \begin{verbatim}
+\tablehead{方法} & \tablehead{准确率} \\
+  \end{verbatim}
+  \slideNote{表头每个单元格用 tablehead 标记，统一使用衬线粗体。
+  l、c、r 分别控制左、中、右对齐；三线表使用 top/mid/bottomrule。}
+\end{frame}
+
+\subsection{自适应宽度与合并表头}
+\begin{frame}{自动列宽与多行内容}
+  \small
+  \begin{tabularx}{\linewidth}{@{}lYY@{}}
+    \toprule
+    \tablehead{方法} & \tablehead{适用场景} & \tablehead{注意事项} \\
+    \midrule
+    文献调研 & 归纳不同工作的共同问题、方法与发展趋势 & 统一比较口径，注明资料的时间范围 \\
+    系统调研 & 检查公开实现与实验设置，进行复现 & 记录版本、运行环境和关键参数 \\
+    \bottomrule
+  \end{tabularx}
+  \sourceNote{示例内容；Y 列自动分配宽度并换行，文字左对齐。}
+  \slideNote{表格行距统一为 1.2。使用 tabularx 与 Y 列处理长文字，
+  不需要手工在每个单元格中插入换行。}
+\end{frame}
+
+\begin{frame}{合并表头与表格引用}
+  \begin{table}
+    \centering
+    \small
+    \begin{tabular}{@{}lrrrr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\tablehead{数据集 A}} & \multicolumn{2}{c}{\tablehead{数据集 B}} \\
+      \cmidrule(lr){2-3}\cmidrule(l){4-5}
+      \tablehead{方法} & \tablehead{均值} & \tablehead{标准差} & \tablehead{均值} & \tablehead{标准差} \\
+      \midrule
+      基线 & 0.81 & 0.03 & 0.79 & 0.04 \\
+      改进 & 0.87 & 0.02 & 0.85 & 0.03 \\
+      \bottomrule
+    \end{tabular}
+    \caption{两组数据集上的示例结果}\label{tab:demo}
+  \end{table}
+  表~\ref{tab:demo} 演示 multicolumn 合并单元格与 cmidrule 分组横线。
+  \sourceNote{数值为排版示例，不代表实际实验结果。}
+\end{frame}
+\begin{frame}{分栏与表格}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.50\textwidth}
+      \textbf{要点}（左栏）
+      \begin{enumerate}
+        \item 栏宽按内容分配，两栏合计不超过 $1$。
+        \item \texttt{[T]} 让两栏顶部对齐；\texttt{onlytextwidth} 避免整体溢出。
+        \item 栏内可放列表、公式或图片。
+      \end{enumerate}
+    \column{0.46\textwidth}
+      \small
+      \begin{tabularx}{\linewidth}{@{}lY@{}}
+        \toprule
+        \tablehead{维度} & \tablehead{说明} \\
+        \midrule
+        数据 & 填写数据来源与规模 \\
+        指标 & 填写评价指标与口径 \\
+        结论 & 填写该维度的结论 \\
+        \bottomrule
+      \end{tabularx}
+      \sourceNote{表格使用 \texttt{tabularx} 与 \texttt{Y} 列自适应宽度。}
+  \end{columns}
+\end{frame}

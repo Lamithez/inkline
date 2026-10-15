@@ -1,0 +1,91 @@
+\section{公式与分步演示}
+\subsection{公式与数学环境}
+\begin{frame}{行内与行间公式}
+  \begin{block}{公式写法}
+    行内公式写作 $a^2+b^2=c^2$；需要居中并强调时使用行间形式：
+    \[
+      \bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i,\qquad
+      s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2 .
+    \]
+  \end{block}
+
+  \begin{exampleblock}{常用记号}
+    均值 $\bar{x}$、方差 $s^2$、求和 $\sum_{i=1}^{n}$、极限 $\lim_{n\to\infty}$。
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}{多行公式、矩阵与分段函数}
+  \begin{align}
+    \label{eq:demo} f(x) &= (x+1)^2 \\
+         &= x^2+2x+1.\notag
+  \end{align}
+  式~\eqref{eq:demo} 使用 align 对齐，label 与 eqref 用于引用。
+  \[
+    A=\begin{pmatrix}1&2\\3&4\end{pmatrix},\qquad
+    g(x)=\begin{cases}x,&x\geq0,\\-x,&x<0.\end{cases}
+  \]
+  \slideNote{pmatrix 提供带圆括号的矩阵，cases 用于分段函数。
+  使用 \texttt{\&} 设置对齐点，双反斜线换行。}
+\end{frame}
+\begin{frame}{定义、定理与证明}
+  \begin{definition}[样本均值]
+    对 $n\geq1$ 个实数 $x_1,\ldots,x_n$，定义
+    $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$。
+  \end{definition}
+
+  \begin{theorem}[均值界]
+    $\min_i x_i\leq\bar{x}\leq\max_i x_i$。
+  \end{theorem}
+
+  \begin{proof}
+    对每个 $i$，均有 $\min_j x_j\leq x_i\leq\max_j x_j$。
+    将不等式求和，再除以 $n$ 即得结论。
+  \end{proof}
+\end{frame}
+
+
+\subsection{逐步展示与链接}
+\begin{frame}{分步显示}
+  \begin{exampleblock}{用 \texttt{\textbackslash pause} 逐条显示}
+    \begin{enumerate}
+      \item 第一步：先给出问题定义。
+      \pause
+      \item 第二步：再给出方法。
+      \pause
+      \item 第三步：最后给出结果与结论。
+    \end{enumerate}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{按步骤强调}
+  \begin{itemize}
+    \item 基线方法：按固定顺序处理输入。
+    \item \alert<2>{改进点一}：在第一步加入筛选。
+    \item \alert<3>{改进点二}：在第二步加入校准。
+    \item \alert<4>{结论}：两项改进共同带来提升。
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[label=overlay-demo]{固定布局与替换内容}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{uncover：保留空间}
+      \begin{itemize}
+        \item<1-> 第一步出现后保留。
+        \item<2-> 第二步出现后保留。
+      \end{itemize}
+      \uncover<3->{第三步显示这段补充说明。}
+    \column{0.48\textwidth}
+      \textbf{only：替换内容}
+      \begin{overlayarea}{\linewidth}{2.8em}
+        \only<1>{第一步：准备输入。}
+        \only<2>{第二步：计算结果。}
+        \only<3>{第三步：分析输出。}
+      \end{overlayarea}
+  \end{columns}
+  \slideNote{uncover 保留隐藏文字的位置；only 只排版当前步骤的内容。
+  overlayarea 固定替换区域的高度，避免页面跳动。}
+  \hyperlink{overlay-demo<1>}{\beamerbutton{返回第一步}}
+\end{frame}

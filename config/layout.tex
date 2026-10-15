@@ -134,6 +134,47 @@
   \inserttocsectionnumber.\inserttocsubsectionnumber\enspace
   \inserttocsubsection\par}
 
+% 目录先按单栏测量自然高度，放不下才按完整章节拆成两栏。
+% 不硬编码章节数量；测量时记录实际进入目录的最后一个章节编号。
+\newsavebox{\InkTocBox}
+\newsavebox{\InkTocTitleBox}
+\newdimen\InkTocAvailable
+\newcount\InkTocLastSection
+\newcount\InkTocSplit
+\newcount\InkTocRightStart
+\newcommand{\InkAutoToc}{%
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \global\InkTocLastSection=0
+  \addtobeamertemplate{section in toc}{%
+    \ifnum\inserttocsectionnumber>\InkTocLastSection
+      \global\InkTocLastSection=\inserttocsectionnumber\relax
+    \fi}{}%
+  \setbox\InkTocBox=\vbox{%
+    \hsize=\textwidth
+    % 抵消 Beamer 目录自带的 -0.5em 顶部间距，恢复标题后的留白。
+    \vskip0.5em\tableofcontents}%
+  \setbox\InkTocTitleBox=\vbox{\hsize=\textwidth\usebeamertemplate{frametitle}}%
+  % 扣除标题区以及目录顶部、底部的安全留白。
+  \InkTocAvailable=\dimexpr\textheight-\ht\InkTocTitleBox-\dp\InkTocTitleBox-0.6cm\relax
+  \par\vspace*{0.15cm}\noindent
+  \ifdim\dimexpr\ht\InkTocBox+\dp\InkTocBox\relax>\InkTocAvailable
+    \InkTocSplit=\InkTocLastSection
+    \advance\InkTocSplit by1 \divide\InkTocSplit by2
+    \InkTocRightStart=\InkTocSplit \advance\InkTocRightStart by1
+    \begin{minipage}[t]{0.48\textwidth}
+      \vspace{0pt}\vskip0.5em
+      \tableofcontents[sections={1-\the\InkTocSplit}]
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.48\textwidth}
+      \vspace{0pt}\vskip0.5em
+      \tableofcontents[sections={\the\InkTocRightStart-\the\InkTocLastSection}]
+    \end{minipage}%
+  \else
+    \usebox{\InkTocBox}%
+  \fi
+  \par\endgroup}
+
 % -----------------------------------------------------------------------------
 % 5. 章节与小节过渡页
 % -----------------------------------------------------------------------------

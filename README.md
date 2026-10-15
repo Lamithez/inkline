@@ -1,11 +1,11 @@
 # 学术组会 Beamer 模板
 
-用于学术组会汇报的 Beamer 模板：16:9 页面，「墨线」样式（白底、深墨色宋体粗标题、黑体正文、标题下蓝色细横线、简洁页码），支持中英文混排。编译后生成 `main.pdf`。
+用于学术组会汇报的 Beamer 模板：16:9 页面，「墨线」样式（白底、深墨色宋体粗标题、黑体正文、标题下蓝色细横线、简洁页码），支持中英文混排。正文是一份按功能组织的语法示例手册，编译后生成 `main.pdf`。
 
 ## 使用方法
 
 1. 在 `config/metadata.tex` 里填写标题和日期。
-2. 编辑 `sections/01`–`04` 的内容；需要插图就放进 `figures/`，文献条目写进 `references/references.bib`。
+2. 从 `sections/01`–`06` 按功能查找并复制所需页面，替换成自己的内容；图片放进 `figures/`，文献条目写进 `references/references.bib`。
 3. 在项目根目录编译：
 
 ```sh
@@ -27,9 +27,13 @@ tectonic main.tex
 | `config/blocks.tex` | 三色圆角 Block |
 | `config/commands.tex` | 目录与脚注字体 |
 | `config/metadata.tex` | 标题与日期 |
-| `sections/01`–`04` | 研究背景、调研结果、分析与讨论、结论 |
-| `sections/05-examples.tex` | 可复制的示例页（Block、分栏、图文、表格、公式、分步显示） |
-| `sections/90-appendix.tex` | 参考文献、术语表与补充材料 |
+| `sections/01-text.tex` | 页面与章节、文字强调、嵌套列表、术语列表、网址、代码 |
+| `sections/02-blocks.tex` | 三色 Block、分栏组合、独立段落注释 |
+| `sections/03-figures.tex` | 等宽与不等宽分栏、插图、并排图片、图题与交叉引用 |
+| `sections/04-tables.tex` | 粗体表头、三线表、自动列宽、合并表头、表格引用 |
+| `sections/05-math-overlays.tex` | 公式、矩阵、分段函数、定理证明、分步显示、内部链接 |
+| `sections/06-references.tex` | 引文、脚注、文献引用与文献表语法 |
+| `sections/90-appendix.tex` | 实际文献表、术语表、续页与特殊页面 |
 | `references/references.bib` | 文献库 |
 | `figures/` | 图片资源（含占位图与说明） |
 | `fonts/` | 随附思源宋体、思源黑体及许可证，无需安装到系统 |
@@ -56,10 +60,12 @@ tectonic main.tex
 - 封面主标题使用淡灰色圆角背景，无阴影；背景色在 `config/colors.tex` 的 `title panel` 中设置。
   封面、章节与小节过渡页不显示短横线；章节编号用主题蓝，标题保持深墨色。
 - 圆角 Block 外边缘与标题横线、正文边界对齐，保留三色、字号及内边距。
-- 表格保持衬线体与三线表，行距为 `1.2`（`config/base.tex` 的 `\InkTableStyle`），表头使用 `\textbf`。
+- 表格保持衬线体与三线表，行距为 `1.2`（`config/base.tex` 的 `\InkTableStyle`），表头每个单元格使用 `\tablehead{文字}`。
 - 单栏短列表可使用 `\begin{keypoints} ... \end{keypoints}`，内容写法与 `enumerate` 相同。
   它增加少量顶部留白与条目间距；双栏或 Block 内仍可使用普通列表。
-- 两版字号、目录和正文内容保持原有设置。
+- 两版字号保持原有设置；目录含 section 与 subsection，默认单栏。
+  `\InkAutoToc` 按实际排版高度判断，超出可用高度时自动按完整章节拆成两栏；
+  两栏顶部对齐，并保留标题横线下方的留白。
 
 ## 常用写法
 
@@ -67,12 +73,36 @@ tectonic main.tex
 | --- | --- |
 | 新建页面 | `\begin{frame}{标题} ... \end{frame}` |
 | 突出重点 | `\keypoint{重点}` 或 `\alert{强调}` |
+| 独立段落注释 | `\slideNote{补充解释或阅读提示。}` |
+| 表头加粗 | `\tablehead{列名}`，每个表头单元格分别标记 |
 | 插入图片 | `\slideimage{result.png}`，限高用 `\slideimage[0.45\textheight]{result.png}` |
 | 来源说明 | `\sourceNote{来源：……}` |
 | 行内引文 | `\enquote{引文}` |
 | 整段引文 | `\begin{quote}...\end{quote}` 或 `\blockquote{...}` |
 | 文献引用 | `\textcite{键}` / `\parencite{键}` / `\footcite{键}` |
 | 网址与路径 | `\url{网址}`、`\path{路径}` |
+
+## 注释与表头
+
+`\slideNote` 是本模板自定义的独立段落宏：淡灰圆角背景、无标题栏、无阴影，
+文字使用比默认正文小一档的 `\small` 字号和灰色直立字形。它自动适应单栏或分栏宽度，
+可包含公式、加粗、链接以及用空行分隔的多个段落，结束后恢复正文样式。
+颜色集中在 `config/colors.tex` 的 `annotation` 中，内边距在 `config/base.tex` 中设置。
+简短出处仍使用 `\sourceNote`；需要带语义标题的内容使用三类 Block。
+
+```latex
+这是正文。
+\slideNote{这里说明一个假设或补充条件。}
+这里继续正文。
+```
+
+`\tablehead` 是 `\textbf` 的语义封装，沿用表格的衬线字体。
+表头需显式标记，不会把数据的第一行误当成表头；合并表头同样适用：
+
+```latex
+\tablehead{方法} & \tablehead{准确率} \\
+\multicolumn{2}{c}{\tablehead{分组标题}} \\
+```
 
 ## 引用类文字的字体
 
@@ -86,9 +116,10 @@ biblatex 的 `\bibfont` 钩子设置，在 frame 里写 `\TimesCite` 会被 bibl
 
 ## 附录与页码
 
-正文页码是「当前 / 总」；`main.tex` 中 `\appendix` 之后自动切换为附录独立编号 **A-1 / A-3**（附录内重新计数）。参考文献、术语表等附录内容都在 `sections/90-appendix.tex`。
+正文页码是「当前 / 总」；`main.tex` 中 `\appendix` 之后自动切换为附录独立编号 **A-当前 / A-总数**（附录内重新计数）。参考文献、术语表等附录内容都在 `sections/90-appendix.tex`。
 
-不需要附录时，删除 `main.tex` 中的 `\appendix` 与 `\input{sections/90-appendix}` 两行；不需要示例页时删除 `\input{sections/05-examples}` 一行。
+不需要附录时，删除 `main.tex` 中的 `\appendix` 与 `\input{sections/90-appendix}` 两行。
+各功能章节可通过删除对应的 `\input` 独立移除，目录和页码自动更新。
 
 ## 参考文献
 

@@ -1,0 +1,98 @@
+% 基础文字、框架与列表；以下 frame 均可直接复制。
+\section{文字与列表}
+\subsection{页面与文字}
+
+\begin{frame}[fragile]{页面与章节的基本写法}
+  \begin{verbatim}
+\section{章节名}
+\subsection{小节名}
+\begin{frame}{页面标题}
+  页面正文。
+\end{frame} % 结束示例页面
+  \end{verbatim}
+  \slideNote{章节和小节会自动生成过渡页。星号形式不进入目录，
+  也不触发过渡页；封面标题与日期在 config/metadata.tex 中设置。}
+\end{frame}
+
+\begin{frame}{文字、强调与页面副标题}
+  \framesubtitle{副标题使用 framesubtitle 命令设置}
+  正文支持中文与 English 混排，段落之间使用空行分隔。
+
+  \textbf{粗体}用于强调；\textit{Italic text}展示西文斜体；
+  \texttt{inline code}用于代码片段。
+
+  \keypoint{主题色粗体重点}，以及 \alert{需要强调的条件}。
+  \slideNote{正文保留黑体；页标题和表格使用宋体。注释文字自动使用小一号字号，
+  与正文保持清晰的层级。}
+\end{frame}
+
+\subsection{列表与代码}
+\begin{frame}{无序、有序与嵌套列表}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{无序列表：itemize}
+      \begin{itemize}
+        \item 第一项。
+          \begin{itemize}
+            \item 嵌套子项。
+            \item 另一条子项。
+          \end{itemize}
+        \item 第二项。
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{有序列表：enumerate}
+      \begin{enumerate}
+        \item 第一步。
+          \begin{enumerate}
+            \item 第一步的子步骤。
+          \end{enumerate}
+        \item 第二步。
+      \end{enumerate}
+  \end{columns}
+  \slideNote{使用 item 添加条目；在列表内部再放一个列表环境即可嵌套。}
+\end{frame}
+
+\begin{frame}{宽松要点与术语列表}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \textbf{keypoints：宽松要点}
+      \begin{keypoints}
+        \item 第一个核心观点。
+        \item 第二个核心观点。
+        \item 第三个核心观点。
+      \end{keypoints}
+    \column{0.48\textwidth}
+      \textbf{description：术语说明}
+      \begin{description}[模型]
+        \item[数据] 输入与观测。
+        \item[模型] 结构与参数。
+        \item[指标] 评价的依据。
+      \end{description}
+  \end{columns}
+\end{frame}
+\begin{frame}{网址、路径与特殊字符}
+  \begin{itemize}
+    \item 网址：\url{https://ctan.org/pkg/beamer}
+    \item 命名链接：\href{https://ctan.org/pkg/beamer}{Beamer 文档入口}
+    \item 路径：\path{figures/example-figure.png}
+    \item 行内代码：\texttt{tectonic main.tex}
+  \end{itemize}
+
+  \begin{block}{特殊字符需要转义}
+    百分号写 \texttt{\textbackslash\%}，与号写 \texttt{\textbackslash\&}，
+    下划线写 \texttt{\textbackslash\_}，井号写 \texttt{\textbackslash\#}。
+    需要保留原始排版的整段代码，可把 frame 声明为
+    \texttt{\textbackslash begin\{frame\}[fragile]} 后使用 verbatim 环境。
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{整段代码与原样文本}
+  页面声明：\verb|\begin{frame}[fragile]{代码示例}|。
+  \begin{verbatim}
+score = mean(values)
+# keep spaces and symbols: _ % &
+  \end{verbatim}
+  \slideNote{verbatim 保留空格和特殊字符；含有原样代码的页面必须使用 fragile。
+  不需要额外的语法高亮宏包或外部程序。}
+\end{frame}

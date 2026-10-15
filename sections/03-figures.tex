@@ -1,0 +1,60 @@
+\section{分栏与图片}
+\subsection{分栏排版}
+\begin{frame}{双栏与不等宽分栏}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.56\textwidth}
+      \textbf{较宽的文字栏}
+      \begin{enumerate}
+        \item 使用 columns 创建分栏。
+        \item 用 column 指定每栏宽度。
+        \item 两栏之间预留适当空隙。
+      \end{enumerate}
+    \column{0.40\textwidth}
+      \begin{block}{较窄的内容栏}
+        放置结论、公式或图片，顶部与左栏对齐。
+      \end{block}
+  \end{columns}
+  \slideNote{使用 [T,onlytextwidth] 顶部对齐并限制总宽度；
+  栏宽之和小于正文宽度，为栏间留出空隙。}
+\end{frame}
+
+\subsection{插图与图题}
+\begin{frame}{插图与来源标注}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.54\textwidth}
+      \centering
+      \slideimage[0.5\textheight]{example-figure.png}
+    \column{0.42\textwidth}
+      \begin{itemize}
+        \item \texttt{\textbackslash slideimage\{文件名\}}：按栏宽等比缩放。
+        \item 加可选参数可限制高度，例如 \texttt{[0.45\textbackslash textheight]}。
+        \item 图片统一放在 \texttt{figures/}，只写文件名即可。
+      \end{itemize}
+  \end{columns}
+  \sourceNote{来源：\texttt{figures/example-figure.png}（占位图，请替换为实际图片）。}
+\end{frame}
+
+\begin{frame}{并排两图}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \centering
+      \slideimage[0.42\textheight]{example-figure.png}\\
+      {\small 方案 A}
+    \column{0.48\textwidth}
+      \centering
+      \slideimage[0.42\textheight]{example-figure.png}\\
+      {\small 方案 B}
+  \end{columns}
+  \sourceNote{来源：同一占位图重复使用，正式汇报时替换为两组真实结果。}
+\end{frame}
+
+
+\begin{frame}{带图题与交叉引用的图片}
+  \begin{figure}
+    \centering
+    \slideimage[0.36\textheight]{example-figure.png}
+    \caption{示例图片与图题}\label{fig:demo}
+  \end{figure}
+  图~\ref{fig:demo} 使用 figure、caption 和 label 添加图题与编号引用。
+  \sourceNote{来源：模板内置占位图，正式使用时替换为实际结果。}
+\end{frame}
