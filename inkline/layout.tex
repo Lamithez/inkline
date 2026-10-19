@@ -1,18 +1,18 @@
 % =============================================================================
 % layout.tex —— 版式层：页标题、边距、页脚与页码、过渡页、目录与列表模板
 % -----------------------------------------------------------------------------
-% 依赖：colors.tex（字体颜色）、style-*.tex（\InkMargin）。
+% 依赖：colors.tex（字体颜色）、style.tex（\ink@margin）。
 % 本文件是「改版面观感」的主要入口。
 % =============================================================================
 
 % -----------------------------------------------------------------------------
 % 1. 页标题与边距
 % -----------------------------------------------------------------------------
-% 标题、横线和正文共享同一组左右边距，只需在 style-*.tex 里改 \InkMargin。
-\setbeamersize{text margin left=\InkMargin,text margin right=\InkMargin}
+% 标题、横线和正文共享同一组左右边距，只需在 style.tex 里改 \ink@margin。
+\setbeamersize{text margin left=\ink@margin,text margin right=\ink@margin}
 
 % 标题下方蓝色横线的粗细
-\newcommand{\InkTopRule}{0.7pt}
+\newcommand{\ink@toprule}{0.7pt}
 
 % 自定义页标题模板：标题（+可选副标题）→ 蓝色细横线 → 下方留白。
 % 用 \hrule 而不是 \hline，避免额外的表格上下文；
@@ -27,7 +27,7 @@
       {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}%
     \fi
     \vskip0.12cm
-    {\color{AcademicBlue}\hrule height\InkTopRule}
+    {\color{AcademicBlue}\hrule height\ink@toprule}
     \vskip0.25cm
   \end{beamercolorbox}}
 
@@ -85,7 +85,7 @@
 \setbeamertemplate{itemize subitem}{\textendash}
 
 % 单栏短要点：适度下移起点并拉开条目，不影响目录、双栏与块内列表。
-\newenvironment{keypoints}{%
+\newenvironment{inkpoints}{%
   \par\vspace{0.12cm}%
   \begin{enumerate}\setlength{\itemsep}{0.55em}%
 }{\end{enumerate}}
@@ -106,13 +106,13 @@
 
 % 当前使用的页码模板名；\appendix 会把它切换成附录模板。
 % 使用 \gdef 是因为 \appendix 在正文中执行，需要全局生效。
-\def\InkPageNumberStyle{totalframenumber}
+\def\ink@pagenumberstyle{totalframenumber}
 
-% 统一的页码输出：右对齐 + 当前模板。字号/颜色由 \ApplySlideStyle 与 colors.tex 设定。
+% 统一的页码输出：右对齐 + 当前模板；字号和颜色由内部样式模块设定。
 % \setbeamertemplate 在这里位于每个页脚的分组内部，作用范围仅限本次排版；
 % 由于模板名是全局的，切换一次即对所有后续页面稳定生效。
-\newcommand{\InkPageNumber}{%
-  \setbeamertemplate{page number in head/foot}[\InkPageNumberStyle]%
+\newcommand{\ink@pagenumber}{%
+  \setbeamertemplate{page number in head/foot}[\ink@pagenumberstyle]%
   \usebeamerfont{page number in head/foot}%
   \usebeamercolor[fg]{page number in head/foot}\hfill
   \usebeamertemplate***{page number in head/foot}\par}
@@ -120,10 +120,10 @@
 % 包装 \appendix：先执行 Beamer 原本的附录处理（进入附录模式、写入计数器），
 % 再把页码模板切换到附录版本。这样附录页脚显示 A-当前 / A-总数，
 % 而正文始终保持「当前 / 总」不变。
-\let\InkAppendixOriginal\appendix
+\let\ink@appendixoriginal\appendix
 \renewcommand{\appendix}{%
-  \InkAppendixOriginal
-  \global\def\InkPageNumberStyle{inkappendixframenumber}}
+  \ink@appendixoriginal
+  \global\def\ink@pagenumberstyle{inkappendixframenumber}}
 
 % -----------------------------------------------------------------------------
 % 4. 章节与小节过渡页

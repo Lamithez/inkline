@@ -3,6 +3,16 @@
 \subsection{页面与文字}
 
 % 含 verbatim 的 frame 必须使用 fragile；示例中的结束行带注释，避免被外层提前识别。
+\begin{frame}[fragile]{文档类与大小版选择}
+  \begin{verbatim}
+\documentclass[size=small]{inkline}
+% 或使用大版，并启用文献功能：
+\documentclass[size=large,bibliography]{inkline}
+  \end{verbatim}
+  \inknote{两行选其一。将 inkline.cls 和 inkline/ 复制到项目根目录，
+  即可在主文件中直接使用；字体目录可选，不完整时回退到 Fandol。}
+\end{frame}
+
 \begin{frame}[fragile]{页面与章节的基本写法}
   \begin{verbatim}
 \section{章节名}
@@ -11,8 +21,8 @@
   页面正文。
 \end{frame} % 结束示例页面
   \end{verbatim}
-  \slideNote{章节和小节会自动生成过渡页。星号形式不进入目录，
-  也不触发过渡页；封面标题与日期在 config/metadata.tex 中设置。}
+  \inknote{章节和小节会自动生成过渡页。星号形式不进入目录，
+  也不触发过渡页；封面标题与日期在 主文件的导言区 中设置。}
 \end{frame}
 
 \begin{frame}{文字、强调与页面副标题}
@@ -22,8 +32,8 @@
   \textbf{粗体}用于强调；\textit{Italic text}展示西文斜体；
   \texttt{inline code}用于代码片段。
 
-  \keypoint{主题色粗体重点}，以及 \alert{需要强调的条件}。
-  \slideNote{正文保留黑体；页标题和表格使用宋体。注释文字自动使用小一号字号，
+  \alert{主题色粗体重点}，以及 \alert{需要强调的条件}。
+  \inknote{正文保留黑体；页标题和表格使用宋体。注释文字自动使用小一号字号，
   与正文保持清晰的层级。}
 \end{frame}
 
@@ -51,18 +61,18 @@
         \item 第二步。
       \end{enumerate}
   \end{columns}
-  \slideNote{使用 item 添加条目；在列表内部再放一个列表环境即可嵌套。}
+  \inknote{使用 item 添加条目；在列表内部再放一个列表环境即可嵌套。}
 \end{frame}
 
 \begin{frame}{宽松要点与术语列表}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
-      \textbf{keypoints：宽松要点}
-      \begin{keypoints}
+      \textbf{inkpoints：宽松要点}
+      \begin{inkpoints}
         \item 第一个核心观点。
         \item 第二个核心观点。
         \item 第三个核心观点。
-      \end{keypoints}
+      \end{inkpoints}
     \column{0.48\textwidth}
       \textbf{description：术语说明}
       \begin{description}[模型]
@@ -95,6 +105,6 @@
 score = mean(values)
 # keep spaces and symbols: _ % &
   \end{verbatim}
-  \slideNote{verbatim 保留空格和特殊字符；含有原样代码的页面必须使用 fragile。
+  \inknote{verbatim 保留空格和特殊字符；含有原样代码的页面必须使用 fragile。
   不需要额外的语法高亮宏包或外部程序。}
 \end{frame}

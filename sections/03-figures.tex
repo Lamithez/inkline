@@ -15,22 +15,22 @@
         放置结论、公式或图片，顶部与左栏对齐。
       \end{block}
   \end{columns}
-  \slideNote{使用 [T,onlytextwidth] 顶部对齐并限制总宽度；
+  \inknote{使用 [T,onlytextwidth] 顶部对齐并限制总宽度；
   栏宽之和小于正文宽度，为栏间留出空隙。}
 \end{frame}
 
 \subsection{插图与图题}
-% 用法：\slideimage[高度上限]{文件名}；来源说明放在对应图片所在栏内。
+% 用法：\includegraphics[width=\linewidth,height=高度上限,keepaspectratio]{文件名}；来源说明放在对应图片所在栏内。
 \begin{frame}{插图与来源标注}
   \begin{columns}[T,onlytextwidth]
     \column{0.54\textwidth}
       \centering
-      \slideimage[0.5\textheight]{example-figure.png}
-      \sourceNote{来源：模板内置占位图。}
+      \includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{example-figure.png}
+      \inksource{来源：模板内置占位图。}
     \column{0.42\textwidth}
       \begin{itemize}
-        \item \texttt{\textbackslash slideimage\{文件名\}}：按栏宽等比缩放。
-        \item 加可选参数可限制高度，例如 \texttt{[0.45\textbackslash textheight]}。
+        \item 使用 \texttt{\textbackslash includegraphics} 插入图片。
+        \item 宽度用 width 设置，高度用 height 设置，例如 \texttt{height=0.45\textbackslash textheight}。
         \item 图片统一放在 \texttt{figures/}，只写文件名即可。
       \end{itemize}
   \end{columns}
@@ -41,26 +41,26 @@
     \column{0.48\textwidth}
       \centering
       \begin{figure}
-        \slideimage[0.36\textheight]{example-figure.png}
+        \includegraphics[width=\linewidth,height=0.36\textheight,keepaspectratio]{example-figure.png}
         \caption{方案 A}
       \end{figure}
     \column{0.48\textwidth}
       \centering
       \begin{figure}
-        \slideimage[0.36\textheight]{example-figure.png}
+        \includegraphics[width=\linewidth,height=0.36\textheight,keepaspectratio]{example-figure.png}
         \caption{方案 B}
       \end{figure}
   \end{columns}
-  \sourceNote{来源：同一占位图重复使用，正式汇报时替换为两组真实结果。}
+  \inksource{来源：同一占位图重复使用，正式汇报时替换为两组真实结果。}
 \end{frame}
 
 % caption 之后添加 label；通过 ref 引用实际编号，不手写图号。
 \begin{frame}{带图题与交叉引用的图片}
   \begin{figure}
     \centering
-    \slideimage[0.36\textheight]{example-figure.png}
+    \includegraphics[width=\linewidth,height=0.36\textheight,keepaspectratio]{example-figure.png}
     \caption{示例图片与图题}\label{fig:demo}
-    \sourceNote{来源：模板内置占位图。}
+    \inksource{来源：模板内置占位图。}
   \end{figure}
   图~\ref{fig:demo} 使用 figure、caption 和 label 添加图题与编号引用。
 \end{frame}

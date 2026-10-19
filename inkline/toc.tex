@@ -1,0 +1,98 @@
+% 目录：悬挂缩进、按实际高度分栏；双栏仍超高时交给 frame 自动续页。
+% 依赖 layout.tex；在带 allowframebreaks 的目录 frame 中调用 \inkcontents。
+
+% 编号占用固定宽度，小节与章节标题的文字起点对齐。
+\newlength{\ink@tocindent}
+\setlength{\ink@tocindent}{2.4em}
+\newcommand{\ink@tocnumber}{%
+  {\setlength{\fboxsep}{0.22em}%
+   \colorbox{AcademicBlue!9!white}{%
+     \makebox[1.1em][c]{\sffamily\bfseries\color{AcademicBlue}%
+       \strut\ifnum\inserttocsectionnumber<10 0\fi\inserttocsectionnumber}}}}
+
+\setbeamertemplate{section in toc}{%
+  \begingroup
+  \par\vskip0.45em
+  % 编号背景不参与行高计算，避免不同标题触发不同的基线间距。
+  \setbox0=\hbox to\ink@tocindent{\smash{\ink@tocnumber}\hfil}%
+  \hangindent=\wd0\hangafter=1
+  \leavevmode\box0\strut\inserttocsection\par
+  \endgroup}
+\setbeamertemplate{subsection in toc}{%
+  \begingroup
+  \par\vskip0.3em\nointerlineskip
+  \leftskip=\ink@tocindent
+  \setbox0=\hbox{{\color{AcademicGray}\inserttocsectionnumber.\inserttocsubsectionnumber}\enspace}%
+  \hangindent=\wd0\hangafter=1
+  \leavevmode\box0\strut\inserttocsubsection\par
+  \endgroup}
+
+\newsavebox{\ink@tocbox}
+\newsavebox{\ink@toctitlebox}
+\newsavebox{\ink@tocleft}
+\newsavebox{\ink@tocright}
+\newsavebox{\ink@tocbestleft}
+\newsavebox{\ink@tocbestright}
+\newdimen\ink@tocavailable
+\newdimen\ink@tocheight
+\newdimen\ink@tocbestheight
+\newcount\ink@toclastsection
+\newcount\ink@tocsplit
+\newcount\ink@tocrightstart
+
+% #1 盒子寄存器，#2 排版宽度，#3 tableofcontents 的选项。
+\newcommand{\ink@measuretoc}[3]{%
+  \setbox#1=\vbox{%
+    \hsize=#2\relax\linewidth=\hsize
+    % 抵消 Beamer 目录自带的负顶部间距。
+    \vskip0.5em\tableofcontents[#3]}}
+
+\newcommand{\inkcontents}{%
+  \begingroup
+  \setlength{\parskip}{0pt}%
+  \global\ink@toclastsection=0
+  \addtobeamertemplate{section in toc}{%
+    \ifnum\inserttocsectionnumber>\ink@toclastsection
+      \global\ink@toclastsection=\inserttocsectionnumber\relax
+    \fi}{}%
+  \ink@measuretoc{\ink@tocbox}{\textwidth}{}%
+  \setbox\ink@toctitlebox=\vbox{\hsize=\textwidth\usebeamertemplate{frametitle}}%
+  % allowframebreaks 默认每页使用 95% 的可用高度，预留相同余量。
+  \ink@tocavailable=\dimexpr\textheight-\ht\ink@toctitlebox-\dp\ink@toctitlebox-0.6cm\relax
+  \ink@tocavailable=0.95\ink@tocavailable
+  \par\vspace*{0.15cm}%
+  \ifdim\dimexpr\ht\ink@tocbox+\dp\ink@tocbox\relax>\ink@tocavailable
+    \ink@tocbestheight=\maxdimen
+    \ink@tocsplit=1
+    % 只在章节边界拆分，选取较高一栏最矮的位置，避免小节分布不均。
+    \loop\ifnum\ink@tocsplit<\ink@toclastsection
+      \ink@tocrightstart=\ink@tocsplit \advance\ink@tocrightstart by1
+      \ink@measuretoc{\ink@tocleft}{0.48\textwidth}{sections={1-\the\ink@tocsplit}}%
+      \ink@measuretoc{\ink@tocright}{0.48\textwidth}{sections={\the\ink@tocrightstart-\the\ink@toclastsection}}%
+      \ink@tocheight=\dimexpr\ht\ink@tocleft+\dp\ink@tocleft\relax
+      \ifdim\dimexpr\ht\ink@tocright+\dp\ink@tocright\relax>\ink@tocheight
+        \ink@tocheight=\dimexpr\ht\ink@tocright+\dp\ink@tocright\relax
+      \fi
+      \ifdim\ink@tocheight<\ink@tocbestheight
+        \ink@tocbestheight=\ink@tocheight
+        \setbox\ink@tocbestleft=\copy\ink@tocleft
+        \setbox\ink@tocbestright=\copy\ink@tocright
+      \fi
+      \advance\ink@tocsplit by1
+    \repeat
+    \ifdim\ink@tocbestheight>\ink@tocavailable
+      % 不缩小字号或隐藏条目；释放单栏盒子，允许在条目之间分页。
+      \unvbox\ink@tocbox
+    \else
+      \noindent
+      \begin{minipage}[t]{0.48\textwidth}
+        \vspace{0pt}\unvbox\ink@tocbestleft
+      \end{minipage}\hfill
+      \begin{minipage}[t]{0.48\textwidth}
+        \vspace{0pt}\unvbox\ink@tocbestright
+      \end{minipage}\par
+    \fi
+  \else
+    \noindent\usebox{\ink@tocbox}\par
+  \fi
+  \endgroup}

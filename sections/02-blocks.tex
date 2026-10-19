@@ -43,15 +43,28 @@
   \end{exampleblock}
 \end{frame}
 
+% 空字符串和纯空格均视为无标题；三类环境保留各自的正文背景色。
+\begin{frame}{无标题 Block}
+  \begin{block}{}
+    普通信息：空标题不产生标题栏，直接显示正文。
+  \end{block}
+  \begin{alertblock}{   }
+    注意条件：纯空格标题也不会产生空白标题栏。
+  \end{alertblock}
+  \begin{exampleblock}{}
+    应用示例：支持 $x>0$、\textbf{粗体}和多行文字。
+  \end{exampleblock}
+\end{frame}
+
 \subsection{独立段落注释}
-% 用法：\slideNote{补充说明}；结束后恢复正文样式。
+% 用法：\inknote{补充说明}；结束后恢复正文样式。
 \begin{frame}[fragile]{正文中的段落注释}
   这是正常正文，用于陈述主要观点和分析结果。
-  \slideNote{这是一段补充注释：可以解释假设、范围或阅读提示。
-  它没有标题栏，采用淡灰圆角背景、小字号灰字，与正文自然区分。}
+  \inknote{这是一段补充注释：可以解释假设、范围或阅读提示。
+  它没有标题栏，采用深蓝细竖线、淡灰直角背景与小字号深灰衬线文字，与正文自然区分。}
   注释结束后，正文恢复原来的字号、颜色和字重。
   \begin{verbatim}
-\slideNote{这里填写注释内容。}
+\inknote{这里填写注释内容。}
   \end{verbatim}
 \end{frame}
 
@@ -60,14 +73,14 @@
     \column{0.48\textwidth}
       \textbf{方法说明}\par\smallskip
       这里放置正文段落。
-      \slideNote{注释自动适应当前栏宽，也可包含 $n>0$、\textbf{粗体}和链接。
+      \inknote{注释自动适应当前栏宽，也可包含 $n>0$、\textbf{粗体}和链接。
 
       空行可分隔注释内部的段落。}
     \column{0.48\textwidth}
       \textbf{结果说明}\par\smallskip
       这里放置另一段正文。
-      \slideNote{slideNote 用于解释正文；sourceNote 用于简短的图表出处。
+      \inknote{inknote 用于解释正文；inksource 用于简短的图表出处。
       两者的语义和视觉层级不同。}
   \end{columns}
-  \sourceNote{来源：此处填写数据来源或参考文献。}
+  \inksource{来源：此处填写数据来源或参考文献。}
 \end{frame}

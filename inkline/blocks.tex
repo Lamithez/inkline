@@ -1,0 +1,55 @@
+% 三类原生 Block：保留圆角和内边距，空白标题仅绘制正文背景。
+\newlength{\ink@blockpadding}
+\setlength{\ink@blockpadding}{0.5em}
+\newlength{\ink@blockinnerwidth}
+\newif\ifink@untitledblock
+
+\newcommand{\ink@blockcolors}[1]{%
+  \setlength{\parskip}{0.3em}%
+  \setbeamercolor{local structure}{use={block title#1},fg=block title#1.bg}%
+  \setbeamercolor{alerted text}{use={block title#1},fg=block title#1.bg}}
+
+\newcommand{\ink@blockbegin}[1]{%
+  \par\vskip\medskipamount
+  \noindent\hspace*{4bp}%
+  \begin{minipage}{\dimexpr\linewidth-8bp\relax}
+    \setlength{\ink@blockinnerwidth}{\dimexpr\linewidth-2\ink@blockpadding\relax}%
+    \expandafter\ifblank\expandafter{\insertblocktitle}{%
+      \ink@untitledblocktrue
+      \begin{beamercolorbox}[wd=\linewidth,sep=0pt,rounded=true,shadow=false]{block body#1}%
+    }{%
+      \ink@untitledblockfalse
+      \begin{beamerboxesrounded}[upper=block title#1,lower=block body#1,width=\linewidth,shadow=false]{%
+        \noindent\hspace*{\ink@blockpadding}%
+        \begin{minipage}{\ink@blockinnerwidth}
+          \usebeamerfont{block title#1}\vspace*{0.2ex}%
+          \strut\insertblocktitle\par\vspace*{0.2ex}%
+        \end{minipage}}%
+    }%
+    \usebeamerfont{block body#1}\ink@blockcolors{#1}%
+    \noindent\hspace*{\ink@blockpadding}%
+    \begin{minipage}{\ink@blockinnerwidth}
+      \vspace*{0.6ex}}
+
+\newcommand{\ink@blockend}{%
+      \par\vspace*{0.6ex}%
+    \end{minipage}%
+    \ifink@untitledblock
+      \end{beamercolorbox}%
+    \else
+      \end{beamerboxesrounded}%
+    \fi
+  \end{minipage}\par\vskip\smallskipamount}
+
+\setbeamertemplate{block begin}{\ink@blockbegin{}}
+\setbeamertemplate{block end}{\ink@blockend}
+\setbeamertemplate{block alerted begin}{\ink@blockbegin{ alerted}}
+\setbeamertemplate{block alerted end}{\ink@blockend}
+\setbeamertemplate{block example begin}{\ink@blockbegin{ example}}
+\setbeamertemplate{block example end}{\ink@blockend}
+\setbeamerfont{block title}{family=\sffamily,series=\bfseries}
+\setbeamerfont{block body}{family=\sffamily,size=\normalsize,series=\mdseries,shape=\upshape}
+\setbeamerfont{block title alerted}{parent=block title}
+\setbeamerfont{block title example}{parent=block title}
+\setbeamerfont{block body alerted}{parent=block body}
+\setbeamerfont{block body example}{parent=block body}

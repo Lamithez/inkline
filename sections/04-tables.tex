@@ -1,20 +1,20 @@
 % 示例阅读顺序：查看实际效果，在源码中复制对应 frame，再按需替换内容。
 \section{表格}
 \subsection{三线表与表头}
-% 每个表头单元格使用 \tablehead；booktabs 提供 top/mid/bottomrule。
+% 每个表头单元格使用 \textbf；booktabs 提供 top/mid/bottomrule。
 \begin{frame}[fragile]{三线表与粗体表头}
   \begin{tabular}{@{}lrr@{}}
     \toprule
-    \tablehead{方法} & \tablehead{准确率} & \tablehead{耗时（秒）} \\
+    \textbf{方法} & \textbf{准确率} & \textbf{耗时（秒）} \\
     \midrule
     基线 & 0.81 & 12.3 \\
     改进 & 0.87 & 10.8 \\
     \bottomrule
   \end{tabular}
   \begin{verbatim}
-\tablehead{方法} & \tablehead{准确率} \\
+\textbf{方法} & \textbf{准确率} \\
   \end{verbatim}
-  \slideNote{表头每个单元格用 tablehead 标记，统一使用衬线粗体。
+  \inknote{表头每个单元格用 textbf 标记，统一使用衬线粗体。
   l、c、r 分别控制左、中、右对齐；三线表使用 top/mid/bottomrule。}
 \end{frame}
 
@@ -23,34 +23,34 @@
   \small
   \begin{tabularx}{\linewidth}{@{}lYY@{}}
     \toprule
-    \tablehead{方法} & \tablehead{适用场景} & \tablehead{注意事项} \\
+    \textbf{方法} & \textbf{适用场景} & \textbf{注意事项} \\
     \midrule
     文献调研 & 归纳不同工作的共同问题、方法与发展趋势 & 统一比较口径，注明资料的时间范围 \\
     系统调研 & 检查公开实现与实验设置，进行复现 & 记录版本、运行环境和关键参数 \\
     \bottomrule
   \end{tabularx}
-  \sourceNote{示例内容；Y 列自动分配宽度并换行，文字左对齐。}
-  \slideNote{表格行距统一为 1.2。使用 tabularx 与 Y 列处理长文字，
+  \inksource{示例内容；Y 列自动分配宽度并换行，文字左对齐。}
+  \inknote{表格行距统一为 1.2。使用 tabularx 与 Y 列处理长文字，
   不需要手工在每个单元格中插入换行。}
 \end{frame}
 
-% 合并表头：\multicolumn{列数}{对齐}{\tablehead{标题}}；caption 后放 label。
+% 合并表头：\multicolumn{列数}{对齐}{\textbf{标题}}；caption 后放 label。
 \begin{frame}{合并表头与表格引用}
   \begin{table}
     \centering
     \small
     \begin{tabular}{@{}lrrrr@{}}
       \toprule
-      & \multicolumn{2}{c}{\tablehead{数据集 A}} & \multicolumn{2}{c}{\tablehead{数据集 B}} \\
+      & \multicolumn{2}{c}{\textbf{数据集 A}} & \multicolumn{2}{c}{\textbf{数据集 B}} \\
       \cmidrule(lr){2-3}\cmidrule(l){4-5}
-      \tablehead{方法} & \tablehead{均值} & \tablehead{标准差} & \tablehead{均值} & \tablehead{标准差} \\
+      \textbf{方法} & \textbf{均值} & \textbf{标准差} & \textbf{均值} & \textbf{标准差} \\
       \midrule
       基线 & 0.81 & 0.03 & 0.79 & 0.04 \\
       改进 & 0.87 & 0.02 & 0.85 & 0.03 \\
       \bottomrule
     \end{tabular}
     \caption{两组数据集上的示例结果}\label{tab:demo}
-    \sourceNote{数值为排版示例，不代表实际实验结果。}
+    \inksource{数值为排版示例，不代表实际实验结果。}
   \end{table}
   表~\ref{tab:demo} 演示 multicolumn 合并单元格与 cmidrule 分组横线。
 \end{frame}
@@ -68,13 +68,13 @@
       \small
       \begin{tabularx}{\linewidth}{@{}lY@{}}
         \toprule
-        \tablehead{维度} & \tablehead{说明} \\
+        \textbf{维度} & \textbf{说明} \\
         \midrule
         数据 & 填写数据来源与规模 \\
         指标 & 填写评价指标与口径 \\
         结论 & 填写该维度的结论 \\
         \bottomrule
       \end{tabularx}
-      \sourceNote{表格使用 \texttt{tabularx} 与 \texttt{Y} 列自适应宽度。}
+      \inksource{表格使用 \texttt{tabularx} 与 \texttt{Y} 列自适应宽度。}
   \end{columns}
 \end{frame}

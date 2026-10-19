@@ -15,7 +15,7 @@
     \item 长引文用 \texttt{\textbackslash blockquote}：\blockquote{这是一段
       较长的引文，超过一定行数后会自动转为整段缩进，并在末尾给出出处。}
   \end{itemize}
-  \sourceNote{来源：\parencite{example2026}（示例条目，请替换为真实文献）。}
+  \inksource{来源：\parencite{example2026}（示例条目，请替换为真实文献）。}
 \end{frame}
 
 \begin{frame}{多段引文与普通脚注}
@@ -25,7 +25,7 @@
     第二段引文：空行分段，保留引文环境的缩进和专用字体。
   \end{quotation}
   正文中的补充说明可以使用普通脚注\footnote{这是一条补充说明；脚注自动编号。}。
-  \sourceNote{出处使用 sourceNote；需要文献时可加入 \parencite{example2026}。}
+  \inksource{出处使用 inksource；需要文献时可加入 \parencite{example2026}。}
 \end{frame}
 
 \subsection{脚注引用与文献表}
@@ -42,7 +42,7 @@
 
   \begin{alertblock}{使用建议}
     \begin{itemize}
-      \item 图表与数据来源用 \texttt{\textbackslash sourceNote}；
+      \item 图表与数据来源用 \texttt{\textbackslash inksource}；
       \item 观点出处用 \texttt{\textbackslash parencite} / \texttt{\textbackslash textcite}；
       \item 只在需要展开出处细节（如封面引文）时使用 \texttt{\textbackslash footnote}。
     \end{itemize}
@@ -56,6 +56,6 @@
   \printbibliography[heading=none]
 \end{frame} % 结束参考文献页面
   \end{verbatim}
-  \slideNote{在 references/references.bib 中添加条目，正文通过键名引用。
+  \inknote{在 references/references.bib 中添加条目，正文通过键名引用。
   附录页码独立编号；实际的参考文献表在文档末尾展示。}
 \end{frame}

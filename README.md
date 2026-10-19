@@ -1,193 +1,201 @@
-# 墨线 Beamer 模板
+# 墨线 Inkline
 
-用于中文学术组会、课程展示与技术分享的 Beamer 模板。采用白底、思源宋体粗标题、思源黑体正文、蓝色细横线及简洁页码；封面主标题使用淡灰圆角背景。
+面向中文学术汇报的 Beamer 文档类。白底、思源宋体粗标题、思源黑体正文、蓝色细横线与圆角信息块，提供大小两种 16:9 页面。项目自带按功能组织的示例手册，可复制所需页面用于自己的汇报。
 
-项目提供大小两种 16:9 版式，共用一份 `main.tex` 与同一套正文。随附按功能组织的语法示例，可查找并复制所需页面。
+## 安装与最小用法
 
-## 快速开始
+把 **`inkline.cls` 和整个 `inkline/` 目录**一并复制到新项目的根目录，与主文件放在同一级。`sections/`、`figures/`、`references/` 和示例 PDF 都不是库运行所必需的。
 
-1. 在 `config/metadata.tex` 中设置标题、作者、单位与日期。未填写的作者和单位不显示。
-2. 在 `main.tex` 的“选择版式”处选择 `style-small` 或 `style-large`。
-3. 从 `sections/` 复制需要的 `frame`，替换正文、图片与文献。
-4. 在 `00-Template` 目录运行：
+```latex
+\documentclass{inkline}
+\title{汇报标题}
+\author{作者}
+\institute{单位}
+\date{\today}
+
+\begin{document}
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+\begin{frame}{研究问题}
+  这里写正文，使用 \alert{重点文字}。
+  \inknote{这里写补充说明或适用条件。}
+\end{frame}
+\end{document}
+```
+
+在主文件所在目录编译：
 
 ```sh
 tectonic main.tex
 ```
 
-输出为 `main.pdf`。`main-small.pdf` 和 `main-large.pdf` 是两种版式的预览快照；普通编译只更新 `main.pdf`。
+也支持完整 TeX Live / MiKTeX 中的 XeLaTeX；不支持 pdfLaTeX 或 LuaLaTeX。Tectonic 首次编译或获取新宏包时需要联网。文件使用 UTF-8，不需要安装随附字体到系统。
 
-### 编译环境
+库自动初始化字体、页面、主题和页脚；不读取用户的标题文件、示例正文、图片目录或文献库。复制库后，直接使用标准的标题、分栏、插图、图题和数学命令即可。
 
-- 推荐 Tectonic，首次编译或新增宏包时需要联网下载依赖。
-- 支持包含 ctex、Beamer、fontspec、biblatex、csquotes 与 Fandol 的 TeX Live / MiKTeX，使用 XeLaTeX 编译。
-- 使用当前 BibTeX 文献后端时，XeLaTeX 的编译顺序为：
-
-```sh
-xelatex main.tex
-bibtex main
-xelatex main.tex
-xelatex main.tex
-```
-
-文件使用 UTF-8 编码；不支持 pdfLaTeX。不需要安装随附字体到操作系统，也不依赖外部主题或代码高亮程序。
-
-## 版式与字体
-
-在 `main.tex` 的 `documentclass` 之前选择一种版式：
+## 文档类选项
 
 ```latex
-\input{config/style-small} % 或 config/style-large
+\documentclass[size=large,bibliography]{inkline}
 ```
 
-| 项目 | 小版（默认） | 大版 |
+| 选项 | 默认值 | 作用 |
 | --- | --- | --- |
-| 页面尺寸 | 16 × 9 cm | 24 × 13.5 cm |
-| 文档字号 | 11pt | 14pt |
-| 左右边距 | 0.9 cm | 1.2 cm |
-| 页脚 | 当前页 / 总页数 | 当前页 / 总页数 |
+| `size=small` | 是 | 16 × 9 cm，11pt，左右边距 0.9 cm |
+| `size=large` | 否 | 24 × 13.5 cm，14pt，左右边距 1.2 cm |
+| `bibliography` | 否 | 加载 BibLaTeX，使用 BibTeX 后端 |
 
-中文标题和表格使用思源宋体，正文使用思源黑体；四个随附 OTF 文件中任意一个缺失时，整套中文字体回退到 TeX 发行版提供的 Fandol。西文正文使用 Latin Modern，参考文献、引文环境与脚注使用 Times 风格的 TeX Gyre Termes。字体来源及许可证见 [fonts/README.md](fonts/README.md)。
+其他 Beamer 选项可以直接传入，例如 `handout`。页面尺寸和文档字号统一由 `size` 控制，不要再同时传入其他字号或纵横比选项。
 
-目录采用淡蓝底章节编号、直立宋体粗标题与较轻的黑体小节。默认单栏；放不下时测量不同章节分界，选择两栏高度较均衡的位置。两栏顶部对齐，长条目换行后对齐标题文字。双栏仍超出容量时以单栏续页显示全部条目，不自动缩小字号。
+## 公开写作接口
 
-章节、小节自动生成居中过渡页；星号形式不进入目录，也不生成过渡页。正文页码采用“当前 / 总数”，`\appendix` 之后采用独立的“A-当前 / A-总数”。
+标准命令优先；模板仅提供五项有明确排版作用的接口：
 
-## 示例索引
-
-| 文件 | 内容 |
+| 接口 | 用途 |
 | --- | --- |
-| [01-text.tex](sections/01-text.tex) | 页面与章节、文字强调、嵌套列表、术语列表、链接、代码 |
-| [02-blocks.tex](sections/02-blocks.tex) | 三色 Block、分栏组合、段落注释 |
-| [03-figures.tex](sections/03-figures.tex) | 分栏、插图、并排图片、图题与交叉引用 |
-| [04-tables.tex](sections/04-tables.tex) | 三线表、粗体表头、自动列宽、合并表头与表格引用 |
-| [05-math-overlays.tex](sections/05-math-overlays.tex) | 公式、矩阵、分段函数、定理证明、动画与内部链接 |
-| [06-references.tex](sections/06-references.tex) | 引文、普通脚注、文献引用与文献表语法 |
-| [90-appendix.tex](sections/90-appendix.tex) | 文献表、术语表、长内容续页与特殊页面 |
+| `\inknote{内容}` | 无标题的段落注释 |
+| `\inksource{出处}` | 图表来源与简短出处 |
+| `\inkcontents` | 自适应目录 |
+| `inkpoints` 环境 | 间距较宽松的有序要点 |
+| `Y` 列类型 | `tabularx` 中左对齐、自动分配宽度的列 |
 
-删除 `main.tex` 中对应的 `\input` 可以移除一个示例章节。使用自己的章节时，按需要保留配置与附录即可。
-
-## 自定义命令与环境
-
-以下是模板提供的写作接口。标准的 `frame`、`columns`、`block`、`\alert`、`\caption` 与文献引用命令仍可直接使用。
-
-### 重点文字：`\keypoint`
-
-```latex
-\keypoint{核心结论}
-```
-
-使用主题蓝与粗体，适合段落或列表中的重点短语。
-
-### 独立段落注释：`\slideNote`
+### 段落注释
 
 ```latex
 这是正文。
-\slideNote{补充解释、假设或阅读提示。可以包含 $n>0$ 和\textbf{重点}。
+\inknote{补充条件：$n>0$，可包含\textbf{重点}与链接。
 
-这里是注释的第二段。}
+空行可分隔注释内部的多个段落。}
 这里继续正文。
 ```
 
-无标题栏、无阴影的淡灰圆角背景，使用 `\small` 灰色直立文字。自动适应当前栏宽，支持多段文字，结束后恢复正文样式。适合短说明；较长内容应分段或拆页。
+注释使用浅灰直角背景，深蓝细竖线贴齐背景左缘，无标题栏、无阴影；文字为 `\small` 深墨灰色直立衬线体，上下内边距为 `0.45em`，自动适应当前栏宽，结束后恢复正文样式。适合补充解释和短提示，较长内容应拆页。`\note` 仍是 Beamer 原生的演讲者备注命令，与此接口无关。
 
-### 来源说明：`\sourceNote`
-
-```latex
-\sourceNote{来源：\parencite{example2026}。}
-```
-
-使用小字号、辅助灰和 Times 风格西文字体，不添加脚注编号。图表专属出处紧随对应图表或题注，置于相同栏内；整页共有出处可放在分栏之后。
-
-### 插图：`\slideimage`
+### 来源说明
 
 ```latex
-\centering
-\slideimage{result.png}
-% 或指定高度上限：
-\slideimage[0.45\textheight]{result.png}
+\inksource{来源：公开数据集或参考文献。}
 ```
 
-参数为 `\slideimage[高度上限]{文件名}`，默认高度上限 `0.58\textheight`，宽度上限为当前 `\linewidth`。图片保持比例，同时满足宽、高限制；命令本身不添加居中、图题或编号。
+使用小字号、辅助灰和 Times 风格西文字体，不添加脚注编号。图表专属来源放在对应图表或题注后，并保持在同一栏内；整页共有来源放在分栏之后。
 
-图片放在 `figures/` 后可只写文件名。需要图题时使用标准 `figure`、`\caption` 和 `\label`。素材约定见 [figures/README.md](figures/README.md)。
+### 目录与宽松列表
 
-### 表头：`\tablehead` 与列类型 `Y`
+```latex
+\begin{frame}[plain,allowframebreaks,noframenumbering]{目录}
+  \inkcontents
+\end{frame}
+
+\begin{frame}{核心观点}
+  \begin{inkpoints}
+    \item 第一个观点。
+    \item 第二个观点。
+  \end{inkpoints}
+\end{frame}
+```
+
+目录默认单栏；超出高度后选择章节分界，形成顶部对齐、较均衡的双栏。双栏仍超高时按单栏续页，不缩小字号或隐藏条目。长条目采用悬挂缩进。`allowframebreaks` 是目录续页所必需的。
+
+`inkpoints` 的写法与 `enumerate` 相同，提供顶部留白和较宽的条目间距；密集列表使用标准 `enumerate` 或 `itemize` 即可。
+
+## Block：有标题与无标题
+
+`block`、`alertblock`、`exampleblock` 是 Beamer 原生环境。Inkline 分别使用墨蓝、砖红与灰绿，提供圆角、内边距，并关闭阴影。
+
+```latex
+\begin{block}{核心问题}
+  有标题时显示标题栏。
+\end{block}
+
+\begin{alertblock}{}
+  空标题时只显示正文区域。
+\end{alertblock}
+
+\begin{exampleblock}{   }
+  纯空格标题同样不显示标题栏。
+\end{exampleblock}
+```
+
+无标题时不保留空白标题高度；字体、背景色和内边距仍按块类型生效。仍需提供标题参数 `{}`，因为这是 Beamer 环境的标准语法。
+
+## 图片、表格与强调
+
+使用原生图片命令指定宽、高上限和保持比例：
+
+```latex
+\includegraphics[
+  width=\linewidth,
+  height=0.45\textheight,
+  keepaspectratio
+]{figures/result.pdf}
+```
+
+库不设置 `\graphicspath`。可在自己的导言区添加 `\graphicspath{{figures/}}`，也可始终写出图片路径。`figure`、`\caption`、`\label` 和 `\ref` 用于编号图题与交叉引用。图片约定见 [figures/README.md](figures/README.md)。
+
+表格采用衬线字体和 1.2 倍行距，表头直接用标准粗体：
 
 ```latex
 \begin{tabularx}{\linewidth}{@{}lY@{}}
   \toprule
-  \tablehead{方法} & \tablehead{说明} \\
+  \textbf{方法} & \textbf{说明} \\
   \midrule
   示例 & 自动分配宽度，长文字自然换行。 \\
   \bottomrule
 \end{tabularx}
 ```
 
-`\tablehead{列名}` 将当前单元格加粗；每个表头单元格分别标记，合并单元格可写 `\multicolumn{2}{c}{\tablehead{分组标题}}`。表格使用衬线体、1.2 倍行距。`Y` 是自定义的左对齐 `X` 列，配合 `tabularx` 自动分配宽度。
+强调使用 `\alert{文字}`，分步强调使用 `\alert<2>{文字}`；不需要额外封装。`\pause`、`\only`、`\uncover`、`columns` 和定理环境均沿用 Beamer 原生语法。
 
-### 宽松要点：`keypoints`
+## 文献、字体与页码
 
-```latex
-\begin{keypoints}
-  \item 第一个核心观点。
-  \item 第二个核心观点。
-\end{keypoints}
-```
-
-内容写法与 `enumerate` 相同，增加顶部留白与条目间距。适合短要点；密集列表仍可使用标准 `enumerate` 或 `itemize`。
-
-### 自适应目录：`\InkAutoToc`
+需要文献时启用选项，并自行指定文献库：
 
 ```latex
-\begin{frame}[plain,allowframebreaks,noframenumbering]{目录}
-  \InkAutoToc
-\end{frame}
+\documentclass[bibliography]{inkline}
+\addbibresource{references.bib}
 ```
 
-自动选择单栏、双栏或续页；`allowframebreaks` 支持超长目录分页。由 `config/toc.tex` 实现，不必手工填写章节范围。
+正文使用 `\textcite{键}`、`\parencite{键}`、`\footcite{键}`。文献表使用 `\printbibliography[heading=none]`；长文献表放在带 `allowframebreaks` 的 frame 中。默认不启用时，库不会加载 BibLaTeX，也不会尝试查找任何 `.bib` 文件。
 
-### 引用字体：`\TimesCite`
+Tectonic 自动完成多轮排版与 BibTeX。XeLaTeX 启用文献后的编译顺序为 XeLaTeX → BibTeX → XeLaTeX → XeLaTeX。当前内置后端为 BibTeX，不要求 Biber。示例条目 `example2026` 为虚构内容，正式使用时替换。
 
-```latex
-{\TimesCite Times-style reference text.}
-```
+`inkline/fonts/` 随附四个思源 OTF，全部存在时使用思源；任何一个缺失时整套中文字体回退到 Fandol。字体与许可证说明见 [inkline/fonts/README.md](inkline/fonts/README.md)。西文正文为 Latin Modern，引用环境、来源与脚注采用 Times 风格的 TeX Gyre Termes。
 
-切换到模板配置的 Times 风格西文字体；局部分组结束后恢复。中文仍由中文字体配置决定。`quote`、`quotation`、文献表和脚注已应用对应设置，普通写作无需手动切换。
+正文页码显示“当前 / 总数”，`\appendix` 之后显示独立的“A-当前 / A-总数”。章节、小节自动生成过渡页；星号形式不进入目录，也不触发过渡页。
 
-### 三色 Block
+## 项目与示例索引
 
-`block`、`alertblock` 和 `exampleblock` 是 Beamer 原生环境，模板只定制其外观：分别采用墨蓝、砖红与灰绿，圆角、无阴影，并提供内边距。
-
-```latex
-\begin{alertblock}{适用条件}
-  这里写限制或需要关注的内容。
-\end{alertblock}
-```
-
-## 配置文件
-
-| 文件 | 职责 |
+| 文件或目录 | 用途 |
 | --- | --- |
-| `main.tex` | 唯一编译入口与章节顺序 |
-| `config/metadata.tex` | 标题、作者、单位与日期 |
-| `config/style-small.tex`、`config/style-large.tex` | 页面尺寸、字号、边距和页脚 |
-| `config/base.tex` | 字体、宏包、文献和常用写作命令 |
-| `config/colors.tex` | 主题色、Block 色与注释背景 |
-| `config/layout.tex` | 页标题、封面、页码、过渡页与列表 |
-| `config/toc.tex` | 目录模板、分栏测量与续页 |
-| `config/blocks.tex` | Block 布局与内边距 |
-| `config/commands.tex` | 目录与脚注的字体设置 |
+| `inkline.cls` | 唯一公共加载入口 |
+| `inkline/` | 内部模块与可选字体；和文档类一起复制 |
+| `main.tex` | 示例手册唯一编译入口，选择版式并指定示例资源 |
+| [01-text.tex](sections/01-text.tex) | 类选项、页面、文字、列表、链接、代码 |
+| [02-blocks.tex](sections/02-blocks.tex) | 三类有标题和无标题 Block、注释与来源 |
+| [03-figures.tex](sections/03-figures.tex) | 分栏、插图、图题与交叉引用 |
+| [04-tables.tex](sections/04-tables.tex) | 表格、粗体表头、合并单元格 |
+| [05-math-overlays.tex](sections/05-math-overlays.tex) | 公式、定理、逐步展示与内部链接 |
+| [06-references.tex](sections/06-references.tex) | 引文、脚注与文献表 |
+| [90-appendix.tex](sections/90-appendix.tex) | 附录、参考文献、术语与续页 |
 
-版式文件通过 `\SlideGeometry` 设置页面，使用 `\ApplySlideStyle` 应用字号和页脚；这两个初始化宏已由 `main.tex` 调用。常用参数包括 `\InkMargin`（左右边距）、`\SourceNoteSize`（来源字号）、`\InkTopRule`（标题横线粗细）和 `\InkBlockPadding`（Block 内边距）。其余 `Ink...` 命令主要用于内部实现。
+`main-small.pdf` 和 `main-large.pdf` 是两种版式的预览快照；普通编译只更新 `main.pdf`。改动配色可编辑 `inkline/colors.tex`；其他内部模块不需要用户手工加载。`\ink@...` 名称为内部实现，不属于稳定写作接口。
 
-## 文献与附录
+## 旧写法迁移
 
-文献写在 `references/references.bib`，正文使用 `\textcite{键}`、`\parencite{键}` 或 `\footcite{键}`。`example2026` 是虚构排版示例，正式汇报时替换为真实条目。
+不提供旧名称别名，使用旧模板的汇报按下表替换：
 
-默认使用 `biblatex + BibTeX`，适配 Tectonic；Tectonic 不提供 Biber。需要 Biber 时使用配备该程序的 XeLaTeX 工具链，并修改 `backend`。文献表字体通过 `\bibfont` 设置。
-
-`\appendix` 切换到附录页码。移除附录时同时删除该命令和 `\input{sections/90-appendix}`。
+| 旧写法 | 新写法 |
+| --- | --- |
+| 手动输入配置文件并初始化 | `\documentclass[size=small]{inkline}` |
+| `\slideimage` | `\includegraphics`，显式填写所需尺寸选项 |
+| `\tablehead` | `\textbf` |
+| `\keypoint` | `\alert` |
+| `\slideNote` | `\inknote` |
+| `\sourceNote` | `\inksource` |
+| `\InkAutoToc` | `\inkcontents` |
+| `keypoints` 环境 | `inkpoints` 环境 |
 
 ## 编译排查
 
@@ -195,6 +203,4 @@ xelatex main.tex
 tectonic --keep-logs main.tex
 ```
 
-检查日志中的 `Missing character`、`Overfull` 和 `undefined`，并查看实际 PDF。目录与交叉引用需要多轮编译，Tectonic 会自动完成。
-
-中文斜体回退到 Fandol 楷体；在当前 XeTeX/Tectonic 链路中，这部分文字可能缺少正确的 ToUnicode 映射，显示正常但搜索、复制不可靠。普通正文、标题和目录使用随附思源字体。
+检查 `Missing character`、`Overfull`、未解析引用与实际 PDF。所有文件使用 UTF-8，保留完整库目录，并从主文件所在目录编译。中文斜体使用 Fandol 楷体；在部分 XeTeX/Tectonic 环境中，这部分文字的 PDF 搜索、复制可能不可靠。

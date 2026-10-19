@@ -1,0 +1,51 @@
+% 中文字体与引用类西文字体；四个随附 OTF 不完整时整套回退。
+\PassOptionsToPackage{no-math}{fontspec}
+\usepackage[UTF8,fontset=none]{ctex}
+\defaultfontfeatures{Ligatures=TeX}
+
+% 字体策略：优先使用随项目携带的思源宋体/黑体（inkline/fonts/ 目录，无需系统安装）；
+% 如果这些 OTF 被删掉，则回退到 TeX 发行版自带的 Fandol。
+% 四个文件必须全部存在，避免字体的 Regular / Bold 指向缺失文件。
+% 中文没有西文意义上的 italic：斜体统一映射到 Fandol 楷体，
+% 粗斜体保持黑体/宋体粗体，避免出现伪斜体。
+\newif\ifink@bundledfonts
+\ink@bundledfontstrue
+\newcommand{\ink@checkfont}[1]{\IfFileExists{inkline/fonts/#1}{}{\ink@bundledfontsfalse}}
+\forcsvlist{\ink@checkfont}{SourceHanSerifCN-Regular.otf,SourceHanSerifCN-Bold.otf,SourceHanSansCN-Regular.otf,SourceHanSansCN-Bold.otf}
+\ifink@bundledfonts
+  % 完整思源字体：衬线、无衬线与中文等宽族
+  \setCJKmainfont{SourceHanSerifCN-Regular.otf}[Path=inkline/fonts/,
+    BoldFont=SourceHanSerifCN-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,ItalicFeatures={Path=},
+    BoldItalicFont=SourceHanSerifCN-Bold.otf]%
+  \setCJKsansfont{SourceHanSansCN-Regular.otf}[Path=inkline/fonts/,
+    BoldFont=SourceHanSansCN-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,ItalicFeatures={Path=},
+    BoldItalicFont=SourceHanSansCN-Bold.otf]%
+  % 等宽场景（代码、路径）用思源黑体，保证中文可读
+  \setCJKmonofont{SourceHanSansCN-Regular.otf}[Path=inkline/fonts/,
+    BoldFont=SourceHanSansCN-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,ItalicFeatures={Path=},
+    BoldItalicFont=SourceHanSansCN-Bold.otf]%
+\else
+  % 思源字体不完整：整套回退到 Fandol
+  \setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolSong-Bold.otf]%
+  \setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolHei-Bold.otf]%
+  \setCJKmonofont{FandolFang-Regular.otf}[BoldFont=FandolHei-Bold.otf,
+    ItalicFont=FandolKai-Regular.otf,BoldItalicFont=FandolHei-Bold.otf]%
+\fi
+% 西文保留 Latin Modern（beamer 默认），无需额外设置。
+
+\IfFileExists{texgyretermes-regular.otf}{%
+  \newfontfamily\ink@citefont{texgyretermes-regular.otf}[%
+    BoldFont=texgyretermes-bold.otf,
+    ItalicFont=texgyretermes-italic.otf,
+    BoldItalicFont=texgyretermes-bolditalic.otf]%
+}{%
+  \newfontfamily\ink@citefont{TeXGyreTermesX-Regular.otf}[%
+    BoldFont=TeXGyreTermesX-Bold.otf,
+    ItalicFont=TeXGyreTermesX-Italic.otf,
+    BoldItalicFont=TeXGyreTermesX-BoldItalic.otf]%
+}

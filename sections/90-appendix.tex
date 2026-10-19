@@ -1,10 +1,10 @@
 % 附录：\appendix 由 main.tex 发出，附录页码独立计数，
-% 页码切换为 A-当前 / A-总数（见 config/layout.tex）。
+% 页码切换为 A-当前 / A-总数（见 inkline/layout.tex）。
 % 不需要附录时，把 main.tex 里的 \appendix 与该文件的 \input 一起删除即可。
 \section{附录}
 
 \begin{frame}[allowframebreaks]{参考文献}
-  % 文献表字体由 config/base.tex 的 \bibfont 统一设为 Times 风格衬线体，
+  % 文献表字体由 inkline/base.tex 的 \bibfont 统一设为 Times 风格衬线体，
   % 中文条目仍由 ctex 回退到思源宋体，无需在此另行设置。
   \small
   \printbibliography[heading=none]
@@ -15,14 +15,14 @@
   \small
   \begin{tabularx}{\linewidth}{@{}lY@{}}
     \toprule
-    \tablehead{符号 / 缩写} & \tablehead{含义} \\
+    \textbf{符号 / 缩写} & \textbf{含义} \\
     \midrule
     符号 A & 在此给出定义与单位 \\
     缩写 B & 全称及首次出现位置 \\
     缩写 C & 全称及首次出现位置 \\
     \bottomrule
   \end{tabularx}
-  \sourceNote{符号表按正文出现顺序排列；正式使用时替换为实际记号。}
+  \inksource{符号表按正文出现顺序排列；正式使用时替换为实际记号。}
 \end{frame}
 
 % framebreak 手动分页；内容过长时 allowframebreaks 也可自动分页。
@@ -32,7 +32,7 @@
     \item allowframebreaks 允许一个 frame 分成多页。
     \item framebreak 可在需要的位置手动分页。
   \end{itemize}
-  \slideNote{续页标题会追加序号。此示例放在附录，以便同时查看附录页码。}
+  \inknote{续页标题会追加序号。此示例放在附录，以便同时查看附录页码。}
   \framebreak
   \textbf{第二页}
   \begin{itemize}
@@ -46,6 +46,6 @@
   {\usebeamerfont{title}\usebeamercolor[fg]{title}示例结束\par}
   \vspace{0.8em}
   普通汇报可在这里放置结束语。
-  \slideNote{plain 隐藏页眉页脚；c 让内容垂直居中；
+  \inknote{plain 隐藏页眉页脚；c 让内容垂直居中；
   noframenumbering 使此页不占用页码。}
 \end{frame}

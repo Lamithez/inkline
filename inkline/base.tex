@@ -1,0 +1,56 @@
+% 基础功能与公开写作命令；不指定用户的图片或文献路径。
+\RequirePackage{booktabs,tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\ink@tablestyle}{\rmfamily\renewcommand{\arraystretch}{1.2}}
+\AtBeginEnvironment{tabular}{\ink@tablestyle}
+\AtBeginEnvironment{tabularx}{\ink@tablestyle}
+\urlstyle{same}
+
+% 引文沿用标准环境的缩进和分段规则。
+\let\ink@quote\quote
+\let\ink@endquote\endquote
+\let\ink@quotation\quotation
+\let\ink@endquotation\endquotation
+\renewenvironment{quote}{\ink@quote\ink@citefont\small}{\ink@endquote}
+\renewenvironment{quotation}{\ink@quotation\ink@citefont\small}{\ink@endquotation}
+\RequirePackage[autostyle]{csquotes}
+
+\ifink@bibliography
+  \RequirePackage[backend=bibtex,style=authoryear,sorting=nyt,
+    maxcitenames=2,maxbibnames=6,giveninits=true,uniquename=init,
+    doi=true,url=true,isbn=false]{biblatex}
+  \renewcommand{\bibfont}{\ink@citefont}
+\fi
+
+% 独立段落注释：直角浅灰底、衬线文字与贴齐左缘的深蓝线。
+\newsavebox{\ink@notebox}
+\newlength{\ink@noteheight}
+\newcommand{\inknote}[1]{%
+  \par\smallskip\begingroup
+  \setlength{\parskip}{0pt}%
+  \noindent\begin{minipage}{\linewidth}
+    \small\rmfamily\mdseries\upshape
+    % sbox 为测量内容建立正确的颜色组，防止装箱时颜色泄漏。
+    \sbox{\ink@notebox}{%
+      \begin{minipage}{\dimexpr\linewidth-1.1em-0.8pt\relax}
+        \raggedright\setlength{\parskip}{0.2em}%
+        \usebeamercolor[fg]{annotation}\noindent#1\par
+      \end{minipage}}%
+    \setlength{\ink@noteheight}{\dimexpr\ht\ink@notebox+\dp\ink@notebox+0.9em\relax}%
+    \usebeamercolor{annotation}%
+    \begin{pgfpicture}
+      \pgfsetcornersarced{\pgfpointorigin}%
+      \pgfsetfillcolor{bg}%
+      \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\linewidth}{\ink@noteheight}}%
+      \pgfusepath{fill}%
+      \pgfsetfillcolor{AcademicBlue}%
+      \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{0.8pt}{\ink@noteheight}}%
+      \pgfusepath{fill}%
+      \pgftext[left,bottom,at={\pgfpoint{\dimexpr0.55em+0.8pt\relax}{0.45em}}]{\usebox{\ink@notebox}}%
+    \end{pgfpicture}%
+  \end{minipage}\par\endgroup\smallskip}
+
+% 图表出处或短来源说明；字体和颜色由局部分组限定。
+\newcommand{\inksource}[1]{%
+  \par\smallskip
+  {\raggedright\ink@sourcenotesize\ink@citefont\color{AcademicGray}#1\par}}

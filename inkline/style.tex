@@ -1,0 +1,32 @@
+% 页面尺寸、字号与页脚；仅由文档类调用。
+\ifink@large
+  \geometry{paperwidth=24cm,paperheight=13.5cm}
+  \newcommand{\ink@margin}{1.2cm}
+  \newcommand{\ink@sourcenotesize}{\footnotesize}
+\else
+  \geometry{paperwidth=16cm,paperheight=9cm}
+  \newcommand{\ink@margin}{0.9cm}
+  \newcommand{\ink@sourcenotesize}{\scriptsize}
+\fi
+\newcommand{\ink@applystyle}{%
+  \ifink@large
+    \setbeamerfont{title}{size=\fontsize{28}{34}}
+    \setbeamerfont{frametitle}{size=\fontsize{22}{27}}
+    \setbeamerfont{section title}{size=\fontsize{26}{32}}
+    \setbeamerfont{block title}{size=\fontsize{15}{19}}
+    \setbeamerfont{subsection in toc}{size=\footnotesize}
+    \setbeamerfont{footnote}{size=\footnotesize}
+    \setbeamerfont{page number in head/foot}{size=\footnotesize}
+  \else
+    \setbeamerfont{title}{size=\LARGE}
+    \setbeamerfont{frametitle}{size=\fontsize{17}{21}}
+    \setbeamerfont{section title}{size=\LARGE}
+    \setbeamerfont{block title}{size=\fontsize{12}{15}}
+    \setbeamerfont{subsection in toc}{size=\scriptsize}
+    \setbeamerfont{footnote}{size=\scriptsize}
+    \setbeamerfont{page number in head/foot}{size=\scriptsize}
+  \fi
+  \setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[wd=\paperwidth,leftskip=\ink@margin,rightskip=\ink@margin]{page number in head/foot}
+      \ink@pagenumber
+    \end{beamercolorbox}}}

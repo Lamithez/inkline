@@ -1,15 +1,15 @@
 % =============================================================================
 % commands.tex —— 目录、脚注等「分散在各处的小设置」
 % -----------------------------------------------------------------------------
-% 依赖：base.tex（\SourceNoteSize 等）、colors.tex、layout.tex。
-% 页码相关的 \InkPageNumber 定义在 layout.tex（与页脚模板放在一起）。
+% 依赖：base.tex（\ink@sourcenotesize 等）、colors.tex、layout.tex。
+% 页码相关的 \ink@pagenumber 定义在 layout.tex（与页脚模板放在一起）。
 % =============================================================================
 
 % -----------------------------------------------------------------------------
 % 1. 目录（两级）字体
 % -----------------------------------------------------------------------------
 % 一级目录：正文尺寸 + 衬线粗体；二级目录：小字号 + 无衬线常规字重。
-% 具体字号在各 style-*.tex 中覆盖（小版 \scriptsize，大版 \footnotesize），
+% 具体字号在style.tex 中覆盖（小版 \scriptsize，大版 \footnotesize），
 % 这里只固定字族与字形，保证两版一致。
 \setbeamerfont{section in toc}{size=\normalsize,family=\rmfamily,series=\bfseries,shape=\upshape}
 \setbeamerfont{subsection in toc}{family=\sffamily,series=\mdseries,shape=\upshape}
@@ -18,8 +18,8 @@
 % 2. 脚注
 % -----------------------------------------------------------------------------
 % 脚注在学术汇报里通常承载引文（作者、标题、会议、年份），因此正文与粗体
-% 都使用 Times 风格字体（\TimesCite，定义在 base.tex），字形保持 Italic；
+% 都使用 Times 风格字体（\ink@citefont，定义在 fonts.tex），字形保持 Italic；
 % 脚注编号保持直立（斜体数字难辨认）。
-% 字号由各 style-*.tex 设置（小版 \scriptsize，大版 \footnotesize）。
-\setbeamerfont{footnote}{family=\TimesCite,shape=\itshape}
+% 字号由style.tex 设置（小版 \scriptsize，大版 \footnotesize）。
+\setbeamerfont{footnote}{family=\ink@citefont,shape=\itshape}
 \setbeamerfont{footnote mark}{shape=\upshape}

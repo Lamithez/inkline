@@ -1,62 +1,21 @@
-% =============================================================================
-% main.tex —— 唯一编译入口
-% -----------------------------------------------------------------------------
-% 编译：tectonic main.tex      （生成 main.pdf）
-%
-% 加载顺序不可随意调换：
-%   1) 先读 style-*.tex：它用 \PassOptionsToClass 传字号，并提供
-%      \SlideGeometry / \ApplySlideStyle / \InkMargin / \SourceNoteSize，
-%      其中 \SlideGeometry 必须在 \documentclass 之后立刻执行。
-%   2) 再读公共设置：base → colors → layout → toc → blocks → commands。
-%   3) 最后 \ApplySlideStyle 施加版式字号与页脚，再读封面元信息。
-% =============================================================================
+% 编译：tectonic main.tex；size=small / size=large 选择版式。
+\documentclass[size=small,bibliography]{inkline}
 
-% -----------------------------------------------------------------------------
-% 1. 选择版式：small（默认，16 × 9 cm）或 large（24 × 13.5 cm）
-%    只改下面这一行即可切换；两版共用正文、字体、配色与图片。
-% -----------------------------------------------------------------------------
-\input{config/style-small}
-\documentclass[aspectratio=169,t]{beamer}
-\SlideGeometry
+% 以下路径与元信息只属于示例文档，不属于库的默认配置。
+\title{墨线 Beamer 语法示例}
+\date{\today}
+\graphicspath{{figures/}}
+\addbibresource{references/references.bib}
 
-% -----------------------------------------------------------------------------
-% 2. 导言区（公共设置，与版式无关）
-% -----------------------------------------------------------------------------
-\input{config/base}       % 宏包、中文字体、表格、文献、正文命令
-\input{config/colors}     % 墨线配色与 Block 语义色
-\input{config/layout}     % 页标题、边距、页脚与页码、过渡页
-\input{config/toc}        % 目录换行、自适应分栏与续页
-\input{config/blocks}     % 三色圆角 Block
-\input{config/commands}   % 目录与脚注字体
-\ApplySlideStyle          % 本版式的字号与页脚
-\input{config/metadata}   % 标题与日期（封面字段）
-
-% 正文段间距；目录页内单独归零。
-\setlength{\parskip}{0.5em}
 \begin{document}
-
-% -----------------------------------------------------------------------------
-% 3. 封面
-%    局部分组加一段脚注后的固定留白：Beamer 把脚注排在底部，
-%    plain 封面容易贴边，把脚注文字上移 0.4cm。分组保证正文页脚注不受影响。
-% -----------------------------------------------------------------------------
-\begingroup
-\addtobeamertemplate{footnote}{}{\par\vspace*{0.4cm}}
 \begin{frame}[plain,c,noframenumbering]
   \titlepage
 \end{frame}
-\endgroup
 
-% -----------------------------------------------------------------------------
-% 4. 目录（不计入页码）
-% -----------------------------------------------------------------------------
 \begin{frame}[plain,allowframebreaks,noframenumbering]{目录}
-  \InkAutoToc
+  \inkcontents
 \end{frame}
 
-% -----------------------------------------------------------------------------
-% 5. 语法示例手册：按功能查找，复制所需 frame 即可用于自己的汇报。
-% -----------------------------------------------------------------------------
 \input{sections/01-text}
 \input{sections/02-blocks}
 \input{sections/03-figures}
@@ -64,12 +23,6 @@
 \input{sections/05-math-overlays}
 \input{sections/06-references}
 
-% -----------------------------------------------------------------------------
-% 6. 附录（可选）
-%    \appendix 之后页码切换为 A-当前 / A-总数（见 config/layout.tex）。
-%    参考文献与补充材料都在 90-appendix.tex；不需要附录时删除下面两行。
-% -----------------------------------------------------------------------------
 \appendix
 \input{sections/90-appendix}
-
 \end{document}

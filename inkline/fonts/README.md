@@ -7,6 +7,6 @@
 
 字体总计约 39 MiB；分别附带原始 SIL Open Font License 1.1 许可证。转发模板时保留许可证。
 
-字体配置位于 `config/base.tex`。四个随附 OTF 全部存在时使用思源字体；任意一个缺失时，整套中文字体回退到 TeX 发行版自带的 Fandol，避免 Regular / Bold 字重指向不存在的文件。
+字体配置位于 `inkline/fonts.tex`。四个随附 OTF 全部存在时使用思源字体；任意一个缺失时，整套中文字体回退到 TeX 发行版自带的 Fandol，避免 Regular / Bold 字重指向不存在的文件。
 
 更换字体时同步设置 Regular 与 Bold 文件名，并保留相应许可证。中文斜体使用 Fandol 楷体，西文字体由主配置单独设置。
