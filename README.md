@@ -98,6 +98,8 @@ tectonic main.tex
 
 目录默认单栏；超出高度后选择章节分界，形成顶部对齐、较均衡的双栏。双栏仍超高时按单栏续页，不缩小字号或隐藏条目。长条目采用悬挂缩进。`allowframebreaks` 是目录续页所必需的。
 
+要关闭目录页，从 `main.tex` 删除或注释掉上例中包含 `\inkcontents` 的整个 `frame` 环境。
+
 `inkpoints` 的写法与 `enumerate` 相同，提供顶部留白和较宽的条目间距；密集列表使用标准 `enumerate` 或 `itemize` 即可。
 
 ## Block：有标题与无标题
@@ -164,6 +166,17 @@ Tectonic 自动完成多轮排版与 BibTeX。XeLaTeX 启用文献后的编译�
 `inkline/fonts/` 随附四个思源 OTF，全部存在时使用思源；任何一个缺失时整套中文字体回退到 Fandol。字体与许可证说明见 [inkline/fonts/README.md](inkline/fonts/README.md)。西文正文为 Latin Modern，引用环境、来源与脚注采用 Times 风格的 TeX Gyre Termes。
 
 正文页码显示“当前 / 总数”，`\appendix` 之后显示独立的“A-当前 / A-总数”。章节、小节自动生成过渡页；星号形式不进入目录，也不触发过渡页。
+
+### 关闭章节和小节过渡页
+
+在 `main.tex` 的 `\documentclass` 之后、`\begin{document}` 之前加入对应命令。只关闭其中一级时，只加入对应的一行。
+
+```latex
+\AtBeginSection{}     % 关闭章节（Section）过渡页
+\AtBeginSubsection{}  % 关闭小节（Subsection）过渡页
+```
+
+如果保留目录页，普通 `\section` 和 `\subsection` 仍会生成目录条目。
 
 ## 项目与示例索引
 
